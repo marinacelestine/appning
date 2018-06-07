@@ -71,27 +71,24 @@ linewidth=2pt % Width of the border lines around content boxes
 %	TITLE SECTION 
 %----------------------------------------------------------------------------------------
 %
-{\includegraphics[height=4em]{logo.png}} % First university/lab logo on the left
+{\includegraphics[height=4em]{mircen.jpeg}} % First university/lab logo on the left
 {\bf\textsc{Sammba-MRI: SmAll MaMmals BrAin MRI in Python}\vspace{0.5em}} % Poster title
-{\textsc{\hspace{56pt}Salma Bougacha{\textsuperscript{1,2}}, Nachiket Nadkarni\textsuperscript{1}, Cl\'ement Garin\textsuperscript{1}, Marc Dhenain\textsuperscript{1}\hspace{12pt} 
-\hspace{56pt} 1 {\footnotesize{Neurodegenerative Dis. Lab., MIRCen, CEA, Fontenay aux Roses Cedex, France;}} 2 {\footnotesize{U1077, INSERM, Caen, France}}}} % Author names and institution
-{\includegraphics[height=4em]{logo.png}} % Second university/lab logo on the right
+{\textsc{\hspace{66pt}Salma Bougacha{\textsuperscript{1,2}}, Nachiket Nadkarni\textsuperscript{1}, Cl\'ement Garin\textsuperscript{1}, Marc Dhenain\textsuperscript{1}\hspace{12pt} 
+\hspace{66pt} {\small{1  Neurodegenerative Dis. Lab., MIRCen, CEA, Fontenay aux Roses Cedex, France;
+2  U1077, INSERM, Caen, France}}}} % Author names and institution
+{\includegraphics[height=4em]{cyceron.png}} % Second university/lab logo on the right
 
 %----------------------------------------------------------------------------------------
 %	OBJECTIVES
 %----------------------------------------------------------------------------------------
 
 \headerbox{Introduction}{name=objectives,column=0,row=0}{
+The current available software for \textcolor{magenta}{\textbf{processing Small mammals neuroimaging}} data lacks maturity.
 
-Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit cursus luctus. Nulla sit amet elit augue. Curabitur scelerisque mollis dolor, quis blandit lorem condimentum at. Pellentesque sed nibh vel \textbf{dolor} sagittis semper. 
+The Python package sammba-MRI (http://sammba-mri.github.io) allows flexible and efficient use of existing methods:
+fully and
+enables fluent scriptable analysis workflows, from DICOM conversion to results visualization.
 
-\begin{enumerate}\compresslist
-\item Feugiat vitae elit
-\item bibendum ante sed lacinia eros in
-\item Curabitur scelerisque arcu consequat varius
-\item Dapibus nulla id purus consectetur
-\item Fringilla integer 
-\end{enumerate}
 
 \vspace{0.3em} % When there are two boxes, some whitespace may need to be added if the one on the right has more content
 }
@@ -100,9 +97,16 @@ Donec non nisl a \textbf{arcu consequat} varius. Sed suscipit cursus luctus. Nul
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 
-\headerbox{Introduction}{name=introduction,column=1,row=0,bottomaligned=objectives}{
+\headerbox{Data}{name=introduction,column=1,row=0,bottomaligned=objectives}{
 
-Aliquam non lacus dolor, \textit{a aliquam quam}. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla in nibh mauris. Donec vel ligula nisi, a lacinia arcu. Sed mi dui, malesuada vel consectetur et, egestas porta nisi. Sed eleifend pharetra dolor, et dapibus est vulputate eu. \textbf{Integer faucibus elementum felis vitae fringilla.} In hac habitasse platea dictumst. Duis tristique rutrum nisl, nec vulputate elit porta ut. Donec sodales sollicitudin turpis sed convallis. Etiam mauris ligula, blandit adipiscing condimentum eu, dapibus pellentesque risus.
+
+\begin{itemize}\compresslist
+\item T2 weighted scans from 34 mouse lemurs (15-60 months old) on 11.7 T
+\item Bruker 11.7-FAIR EPI sequence from a group of 10 mice (5-7 months old)
+\item BOLD EPI and T2 weighted 3DRARE from 15 mice (2-3 months old) from a public dataset
+\end{itemize}
+
+
 }
 
 %----------------------------------------------------------------------------------------
