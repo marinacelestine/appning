@@ -11,40 +11,40 @@ mice_perfs = glob.glob('/home/Promane/2014-ROMANE/' +
     'analysis20170905/MRIsessions/2017*/perfFAIREPI_n0.nii.gz')
 mice_perfs = mice_perfs[:10]
 mice_dirs = [os.path.dirname(p) for p in mice_perfs]
-anat_files = [os.path.join(d, 'anat_n0.nii.gz') for d in mice_dirs]
-m0_files = [os.path.join(d, 'perfFAIREPI_n0_M0.nii.gz') for d in mice_dirs]
+mice_ids = [os.path.basename(m)[9:15] for m in mice_dirs]
+spm_mice_dirs = [os.path.join('/home/Pmamobipet/0_Dossiers-Personnes',
+                              'Salma/inhouse_mouse_perf', 'mouse_' + mouse_id,
+                              'reoriented')
+                 for mouse_id in mice_ids]
+anat_files = [os.path.join(d, 'anat_n0.nii.gz') for d in spm_mice_dirs]
+m0_files = [os.path.join(d, 'perfFAIREPI_n0_M0.nii.gz') for d in spm_mice_dirs]
 perf_proc_files = [os.path.join(d, 'perfFAIREPI_n0_proc.nii.gz')
                    for d in mice_dirs]
 
 output_dir = os.path.join('/home/bougacha',
                           'inhouse_mouse_perf_to_reoriented_head100')
 template_file = os.path.join(output_dir, 'head100_reoriented.nii.gz')
-
 template_brain_mask_file = os.path.join(output_dir,
                                         'brain100_reoriented_binarized.nii.gz')
-
-if not os.path.isfile(template_brain_mask_file):
-    template_brain_file = os.path.join(output_dir,
-    'brain100_reoriented.nii.gz')
-    img = image.math_img('img>0', img=template_brain_file)
-    img.to_filename(template_brain_mask_file)   
     
 spm_data_dir = os.path.join('/home/Pmamobipet/0_Dossiers-Personnes/Salma/',
                             'inhouse_mouse_perf_sammba')
-for mouse_dir, anat_file, m0_file, perf_proc_file in zip(mice_dirs,
-                                                         anat_files,
-                                                         m0_files,
-                                                         perf_proc_files)[4:]:
-    mouse_id = os.path.basename(mouse_dir)[9:15]
-    output_dir = os.path.join(output_dir, mouse_id)
+for mouse_id, anat_file, m0_file, perf_proc_file in zip(mice_ids,
+                                                        anat_files,
+                                                        m0_files,
+                                                        perf_proc_files)[4:5]:
+    mouse_output_dir = os.path.join(output_dir, 'mouse_' + mouse_id)
     registrator = template_registrator.TemplateRegistrator(
         brain_volume=400,
         dilated_template_mask=None,
-        output_dir=output_dir,
+        output_dir=mouse_output_dir,
         template=template_file,
-        template_brain_mask=template_brain_mask_file)
+        caching=True,
+        template_brain_mask=template_brain_mask_file,
+        registration_kind='affine')
 
     registrator.fit_anat(anat_file)
+    stop
     # Save uncompressed image to output spm directory
 #    target_dir = os.path.join(spm_data_dir, mouse_id)
 #    if not os.path.isdir(target_dir):
