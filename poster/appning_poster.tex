@@ -83,10 +83,15 @@ linewidth=2pt % Width of the border lines around content boxes
 %----------------------------------------------------------------------------------------
 
 \headerbox{Introduction}{name=objectives,column=0,row=0}{
-The current available software for \textcolor{magenta}{\textbf{processing Small mammals neuroimaging}} data lacks maturity.
+The current available software for \textcolor{magenta}{\textbf{processing Small mammals neuroimaging}} data lacks maturity:
 
-The Python package sammba-MRI (http://sammba-mri.github.io) allows flexible and efficient use of existing methods:
-fully and
+\begin{itemize}\compresslist
+\item Bruker DICOM to NIFTI conversion not garenteed
+\item Manual intervention is usually needed
+\item Can perform badly or even fail depending on the images quality
+\end{itemize}
+
+The Python package sammba-MRI (http://sammba-mri.github.io) 
 enables fluent scriptable analysis workflows, from DICOM conversion to results visualization.
 
 
@@ -99,12 +104,20 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 
 \headerbox{Data}{name=introduction,column=1,row=0,bottomaligned=objectives}{
 
-
-\begin{itemize}\compresslist
-\item T2 weighted scans from 34 mouse lemurs (15-60 months old) on 11.7 T
-\item Bruker 11.7-FAIR EPI sequence from a group of 10 mice (5-7 months old)
-\item BOLD EPI and T2 weighted 3DRARE from 15 mice (2-3 months old) from a public dataset
-\end{itemize}
+\begin{center}
+\begin{tabular}{l l l}
+\toprule
+\textbf{Animals} & \textbf{Modalities} & \textbf{Bruker}\\
+\midrule
+34 lemurs 	& MSME & 11.7 \\
+10 C57 mice & MSME & 11.7 \\
+			& FAIR-EPI &  \\
+15 C57 mice & Turbo RARE & 9.4 \\
+ 		    & GE-EPI & \\
+\bottomrule
+\end{tabular}
+\captionof{table}{Table caption}
+\end{center}
 
 
 }
@@ -113,12 +126,12 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 %	RESULTS 1
 %----------------------------------------------------------------------------------------
 
-\headerbox{Results 1}{name=results,column=2,span=2,row=0}{
+\headerbox{Registration accuracy}{name=results,column=2,span=2,row=0}{
 
 \begin{multicols}{2}
 \vspace{1em}
 \begin{center}
-\includegraphics[width=0.8\linewidth]{placeholder}
+\includegraphics[width=0.8\linewidth]{sfn_template.jpg}
 \captionof{figure}{Figure caption}
 \end{center}
 
@@ -132,7 +145,7 @@ Aliquam auctor, metus id ultrices porta, risus enim cursus sapien, quis iaculis 
 Sed fringilla tempus hendrerit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam ut elit sit amet metus lobortis consequat sit amet in libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel sem magna. Nunc at convallis urna. isus ante. Pellentesque condimentum dui. Etiam sagittis purus non tellus tempor volutpat. Donec et dui non massa tristique adipiscing. Quisque vestibulum eros eu.
 
 \begin{center}
-\includegraphics[width=0.8\linewidth]{placeholder}
+\includegraphics[width=0.8\linewidth]{mean_cbf_y_no_title.jpg}
 \captionof{figure}{Figure caption}
 \end{center}
 
@@ -250,7 +263,7 @@ Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et
 %	RESULTS 2
 %----------------------------------------------------------------------------------------
 
-\headerbox{Results 2}{name=results2,column=1,below=objectives,bottomaligned=conclusion}{ % This block's bottom aligns with the bottom of the conclusion block
+\headerbox{Registration accuracy}{name=results2,column=1,below=objectives,bottomaligned=conclusion}{ % This block's bottom aligns with the bottom of the conclusion block
 
 Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.
 

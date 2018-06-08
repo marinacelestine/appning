@@ -40,8 +40,7 @@ for mouse_id, anat_file, m0_file, perf_proc_file in zip(mice_ids,
         output_dir=mouse_output_dir,
         template=template_file,
         caching=True,
-        template_brain_mask=template_brain_mask_file,
-        registration_kind='affine')
+        template_brain_mask=template_brain_mask_file)
 
     registrator.fit_anat(anat_file)
     stop
