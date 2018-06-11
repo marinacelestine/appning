@@ -28,12 +28,11 @@ def set_axis_style(ax, labels):
     ax.set_xticks(np.arange(1, len(labels) + 1))
     ax.set_xticklabels(labels)
     ax.set_xlim(0.25, len(labels) + 0.75)
-    ax.set_xlabel('Sample name')
 
 
 if __name__ == '__main__':
-    mouse_dir = 'mouse_091220'
     mouse_dir = 'mouse_191851'
+    mouse_dir = 'mouse_091220'
     my_dir = os.path.join(
         os.path.expanduser('~/inhouse_mouse_perf_preprocessed_mine'),
         mouse_dir)
@@ -44,7 +43,7 @@ if __name__ == '__main__':
             mouse_dir)
     elif os.path.expanduser('~') == '/home/salma':
         spm_dir = os.path.join('/home/salma/appning_data/Pmamobipet/inhouse_mouse_perf',
-                               mouse_dir, 'reoriented')
+                               mouse_dir)
     else:
         raise ValueError('Unknown user')
 
@@ -53,10 +52,10 @@ if __name__ == '__main__':
         'perfFAIREPI_n0_M0_unbiased_perslice_oblique.nii.gz')
     spm_anat = os.path.join(
         spm_dir,
-        'anat_n0_clear_hd.nii')  # anat_n0_unifized_clean_hd.nii
+        'reoriented/anat_n0_clear_hd.nii')  # anat_n0_unifized_clean_hd.nii
     spm_perf = os.path.join(
         spm_dir,
-        'rperfFAIREPI_n0_M0.nii') # replace by rperfFAIREPI_n0_M0_unbiased_clean_hd.nii)
+        'reoriented/rperfFAIREPI_n0_M0.nii') # replace by rperfFAIREPI_n0_M0_unbiased_clean_hd.nii)
 
 
     perf_to_anat_transform = os.path.join(
@@ -92,6 +91,7 @@ if __name__ == '__main__':
 
     l = utils.LocalBistat().run
     l_out = l(in_file1=spm_anat, in_file2=spm_perf, mask_file=spm_perf_mask,
+              out_file=fname_presuffix(spm_anat, '_bistat'),
               neighborhood=('RECT', (-2, -2, -2)),
               stat=['crA', 'spearman', 'normuti'],
               environ={'AFNI_DECONFLICT':'OVERWRITE'})
@@ -104,10 +104,14 @@ if __name__ == '__main__':
               mask_file=my_perf_mask,
               neighborhood=('RECT', (-2, -2, -2)),
               stat=['crA', 'spearman', 'normuti'],
+              out_file=fname_presuffix(my_anat, suffix='_bistat'),
               environ={'AFNI_DECONFLICT':'OVERWRITE'})
     my_cr_data = image.index_img(l_out.outputs.out_file, 0).get_data()
     my_spearman_data = image.index_img(l_out.outputs.out_file, 1).get_data()
     my_nmi_data = image.index_img(l_out.outputs.out_file, 2).get_data()
+
+    spm_perf_mask_data = spm_nmi_data > 0
+    my_perf_mask_data = my_nmi_data > 0
 
     assert_less(spm_spearman_data[spm_perf_mask_data].mean(),
                 my_spearman_data[my_perf_mask_data].mean())
@@ -118,8 +122,12 @@ if __name__ == '__main__':
 
     import matplotlib.pylab as plt
 
-    data = [my_cr_data[my_perf_mask_data].ravel(),
-            spm_cr_data[spm_perf_mask_data].ravel()]
+
+    data = [my_spearman_data[my_perf_mask_data].ravel(),
+            spm_spearman_data[spm_perf_mask_data].ravel()]
+
+    data = [1. / my_nmi_data[my_perf_mask_data].ravel(),
+            1. / spm_nmi_data[spm_perf_mask_data].ravel()]
     parts = plt.violinplot(
             data, showmeans=False, showmedians=False,
             showextrema=False)
@@ -149,4 +157,5 @@ if __name__ == '__main__':
     set_axis_style(plt.gca(), labels)
     
     plt.subplots_adjust(bottom=0.15, wspace=0.05)
+    plt.savefig(os.path.expanduser('~/publications/appning/poster/figures/nmi_violonplots.png'))
     plt.show()

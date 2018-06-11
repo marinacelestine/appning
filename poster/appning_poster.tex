@@ -86,12 +86,12 @@ linewidth=2pt % Width of the border lines around content boxes
 The current available software for \textcolor{magenta}{\textbf{processing Small mammals neuroimaging}} data lacks maturity:
 
 \begin{itemize}\compresslist
-\item Bruker DICOM to NIFTI conversion not garenteed
+\item Bruker DICOM to NIFTI conversion is not guaranteed
 \item Manual intervention is usually needed
 \item Can perform badly or even fail depending on the images quality
 \end{itemize}
 
-The Python package sammba-MRI (http://sammba-mri.github.io) 
+sammba-MRI
 enables fluent scriptable analysis workflows, from DICOM conversion to results visualization.
 
 
@@ -107,16 +107,16 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 \begin{center}
 \begin{tabular}{l l l}
 \toprule
-\textbf{Animals} & \textbf{Modalities} & \textbf{Bruker}\\
+\textbf{Animals} & \textbf{Sequences} & \textbf{Bruker}\\
 \midrule
-34 lemurs 	& MSME & 11.7 \\
-10 C57 mice & MSME & 11.7 \\
+34 lemurs 	& MSME-T2 & 11.7 T\\
+10 C57 mice & MSME-T2 & 11.7 T\\
 			& FAIR-EPI &  \\
-15 C57 mice & Turbo RARE & 9.4 \\
+15 C57 mice & Turbo RARE & 9.4 T\\
  		    & GE-EPI & \\
 \bottomrule
 \end{tabular}
-\captionof{table}{Table caption}
+\captionof{table}{Data characteristics}
 \end{center}
 
 
@@ -126,7 +126,7 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 %	RESULTS 1
 %----------------------------------------------------------------------------------------
 
-\headerbox{Registration accuracy}{name=results,column=2,span=2,row=0}{
+\headerbox{Applications}{name=results,column=2,span=2,row=0}{
 
 \begin{multicols}{2}
 \vspace{1em}
@@ -235,28 +235,20 @@ Maecenas viverra ligula a risus blandit vel tincidunt est adipiscing. Suspendiss
 
 \headerbox{Materials \& Methods}{name=method,column=0,below=objectives,bottomaligned=conclusion}{ % This block's bottom aligns with the bottom of the conclusion block
 
-The following materials were required to complete the research:
+Sammba-MRI offers a toolbox to download reference neuroimaging datasets from different
+species of small animals. It provides 
+end-to-end pipelines to process and analyze structural, functional and perfusion MRI.
 
-\begin{itemize}\compresslist
-\item Curabitur pellentesque dignissim
-\item Eu facilisis est tempus quis
-\item Duis porta consequat lorem
-\item Eu facilisis est tempus quis
-\end{itemize}
-
-The following equations were used for statistical analysis:
-
-\begin{equation}
-\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
-\label{eq:refname}
-\end{equation}\
-
-\begin{equation}
-E = mc^{2}
-\label{eqn:Einstein}
-\end{equation}
-
-Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et volutpat ante orci sagittis mi. Morbi rutrum laoreet semper. Morbi accumsan enim nec tortor consectetur non commodo nisi sollicitudin. Proin sollicitudin. Pellentesque eget orci eros. Fusce ultricies, tellus et pellentesque fringilla, ante massa luctus libero, quis tristique purus urna nec nibh.
+Sammba-MRI allows to convert Bruker DICOM files to the standard Nifti-1 imaging format and
+extracts extensive information using DCMTK. It combines different neuroimaging tools leveraged
+through nipype [1] to perform spatial preprocessing steps: bias-field correction with ANTS, brain
+extraction with RATS [2, 3], EPI distortion correction and spatial registration with AFNI. Resting
+state fMRI (rsfMRI) connectivity analysis is handled through nilearn [4], while perfusion map
+estimation uses nonlinear fitting. Finally, brain images visualization is done with nilearn.
+Sammba-MRI provides practical examples to shows how to use the implemented methods. By
+relying on nipype interfaces, sammba-MRI is able to run an entire analysis in a single Python script.
+The package design facilitates data exploration: rerunning pipelines is optimized through caching
+mechanisms and long lasting steps are executed in parallel.
 }
 
 %----------------------------------------------------------------------------------------
@@ -268,31 +260,15 @@ Phasellus imperdiet, tortor vitae congue bibendum, felis enim sagittis lorem, et
 Donec faucibus purus at tortor egestas eu fermentum dolor facilisis. Maecenas tempor dui eu neque fringilla rutrum. Mauris \emph{lobortis} nisl accumsan.
 
 \begin{center}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{Table caption}
+\includegraphics[width=0.8\linewidth]{dice_boxplots.png}
+\captionof{figure}{Figure caption}
 \end{center}
 
 Nulla ut porttitor enim. Suspendisse venenatis dui eget eros gravida tempor. Mauris feugiat elit et augue placerat ultrices. Morbi accumsan enim nec tortor consectetur non commodo.
 
 \begin{center}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{Table caption}
+\includegraphics[width=0.8\linewidth]{nmi_violonplots.png}
+\captionof{figure}{Figure caption}
 \end{center}
 }
 
