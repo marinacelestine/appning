@@ -21,8 +21,7 @@ m0_files = [os.path.join(d, 'perfFAIREPI_n0_M0.nii.gz') for d in spm_mice_dirs]
 perf_proc_files = [os.path.join(d, 'perfFAIREPI_n0_proc.nii.gz')
                    for d in mice_dirs]
 
-output_dir = os.path.join('/home/bougacha',
-                          'inhouse_mouse_perf_to_reoriented_head100')
+output_dir = os.path.join(os.path.expanduser('~/inhouse_mouse_perf_to_reoriented_head100'))
 template_file = os.path.join(output_dir, 'head100_reoriented.nii.gz')
 template_brain_mask_file = os.path.join(output_dir,
                                         'brain100_reoriented_binarized.nii.gz')
@@ -40,7 +39,8 @@ for mouse_id, anat_file, m0_file, perf_proc_file in zip(mice_ids,
         output_dir=mouse_output_dir,
         template=template_file,
         caching=True,
-        template_brain_mask=template_brain_mask_file)
+        template_brain_mask=template_brain_mask_file,
+        registration_kind='affine')
 
     registrator.fit_anat(anat_file)
     stop
