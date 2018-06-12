@@ -3,9 +3,13 @@ import glob
 from sammba.registration import template_registrator
 
 
-anat_files = glob.glob(os.path.expanduser('~/nilearn_data/mrm_2010/C57*X*.nii.gz'))
+anat_files = glob.glob(os.path.expanduser(
+    '~/nilearn_data/mrm_2010/C57*.nii.gz'))
+anat_files.remove(os.path.expanduser(
+    '~/nilearn_data/mrm_2010/C57_Az1_invivo.nii.gz'))
 output_dir = os.path.join(os.path.expanduser('~/mrm_preprocessed'))
-template_file = os.path.expanduser('~/nilearn_data/mrm_2010/Average_atlas_invivo.nii.gz')
+template_file = os.path.expanduser(
+    '~/nilearn_data/mrm_2010/Average_template_invivo.nii.gz')
 template_brain_mask_file = os.path.expanduser(
     '~/nilearn_data/mrm_2010/Average_brain_mask_invivo.nii.gz')
 

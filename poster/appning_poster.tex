@@ -83,7 +83,7 @@ linewidth=2pt % Width of the border lines around content boxes
 %----------------------------------------------------------------------------------------
 
 \headerbox{Introduction}{name=objectives,column=0,row=0}{
-The current available software for \textcolor{magenta}{\textbf{processing Small mammals neuroimaging}} data lacks maturity:
+The available software for \textcolor{magenta}{\textbf{processing Small mammals neuroimaging}} data lacks maturity:
 
 \begin{itemize}\compresslist
 \item Bruker DICOM to NIFTI conversion is not guaranteed
@@ -105,15 +105,21 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 \headerbox{Data}{name=introduction,column=1,row=0,bottomaligned=objectives}{
 
 \begin{center}
-\begin{tabular}{l l l}
+\begin{tabular}{l l l l}
 \toprule
-\textbf{Animals} & \textbf{Sequences} & \textbf{Bruker}\\
+\textbf{Dataset} & \textbf{Animals} & \textbf{scans} & \textbf{Bruker}\\
 \midrule
-34 lemurs 	& MSME-T2 & 11.7 T\\
-10 C57 mice & MSME-T2 & 11.7 T\\
-			& FAIR-EPI &  \\
-15 C57 mice & Turbo RARE & 9.4 T\\
- 		    & GE-EPI & \\
+Brookhave & 12 C57 mice 		& anat T2 			& 9.4T  \\ %BL/6J
+2010 	  & 12-14-week 		&					& 	    \\
+	 	  &					&					&		\\
+Inhouse 	  & 34 lemurs 		& anat T2 			& 11.7 T\\
+2017 	  &					&					&		\\
+	 	  &					&					&		\\
+Inhouse	  &	10 C57 mice 		& anat T2  			& 11.7 T\\
+2017	  	  & 					& perfusion		&  		\\
+	 	  &					&					&		\\
+Zerbi 	  & 15 C57 mice 		& anat T2 				& 9.4 T \\
+2015 	  & 					& BOLD-EPI   		& 		\\
 \bottomrule
 \end{tabular}
 \captionof{table}{Data characteristics}
@@ -126,7 +132,7 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 %	RESULTS 1
 %----------------------------------------------------------------------------------------
 
-\headerbox{Applications}{name=results,column=2,span=2,row=0}{
+\headerbox{Group studies}{name=results,column=2,span=2,row=0}{
 
 \begin{multicols}{2}
 \vspace{1em}
