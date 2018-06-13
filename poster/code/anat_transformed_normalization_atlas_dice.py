@@ -6,11 +6,9 @@ for each tissue
 import os
 import glob
 import numpy as np
-from skimage import measure
-from nilearn import image, masking
 from nilearn._utils.niimg_conversions import check_niimg
+from nilearn import image
 from sammba.externals.nipype.interfaces import afni
-from sammba.externals.nipype.caching import Memory
 from sammba.externals.nipype.utils.filemanip import fname_presuffix
 
 
@@ -44,47 +42,45 @@ if __name__ == '__main__':
             '/home/Pmamobipet/0_Dossiers-Personnes/Salma/mrm_2010/reoriented',
             'Average_atlas_invivo.nii')
         spm_dir = os.path.join(
-            '/home/Pmamobipet/0_Dossiers-Personnes/Salma/mrm_2010/reoriented')
+            '/home/Pmamobipet/0_Dossiers-Personnes/Salma/mrm_2010/reoriented',
+            'transformed')
     elif os.path.expanduser('~') == '/home/salma':
         spm_template_atlas_file = os.path.join(
             '/home/salma/appning_data/Pmamobipet/mrm_2010/reoriented',
-            'Average_atlas_invivo.nii')
-        spm_dir = '/home/salma/appning_data/Pmamobipet/mrm_2010/reoriented'
-        sammba_dir = '/home/salma/mrm_preprocessed'
+            'transformed', 'Average_atlas_invivo.nii')
+        spm_dir = os.path.join(
+            '/home/salma/appning_data/Pmamobipet/mrm_2010/reoriented',
+            'transformed')
     else:
         raise ValueError('Unknown user')
 
-    sammba_dir = os.path.expanduser('~/mrm_preprocessed')
-    sammba_raw_dir = os.path.expanduser('~/nilearn_data/mrm_2010')
-    sammba_template_file = os.path.join(sammba_raw_dir,
-                                        'Average_template_invivo.nii.gz')
-    sammba_template_atlas_file = os.path.join(sammba_raw_dir,
-                                              'Average_atlas_invivo.nii.gz')
+    sammba_dir = os.path.expanduser('~/mrm_transformed_preprocessed')
+    sammba_raw_dir = os.path.expanduser('~/mrm_transformed')
+    sammba_template_file = os.path.expanduser(
+        '~/nilearn_data/mrm_2010/Average_template_invivo.nii.gz')
+    sammba_template_atlas_file = os.path.expanduser(
+        '~/nilearn_data/mrm_2010/Average_atlas_invivo.nii.gz')
 
     anat_files = glob.glob(os.path.expanduser(
-        '~/nilearn_data/mrm_2010/C57*.nii.gz'))
+        '~/mrm_transformed/transfo_C57*.nii.gz'))
     anat_files.remove(os.path.expanduser(
-        '~/nilearn_data/mrm_2010/C57_Az1_invivo.nii.gz'))
+        '~/mrm_transformed/transfo_C57_Az1_invivo.nii.gz'))
     anat_files.remove(os.path.expanduser(
-        '~/nilearn_data/mrm_2010/C57_ab1_invivo.nii.gz'))
-    mice_ids = [os.path.basename(a)[3:] for a in anat_files]
+        '~/mrm_transformed/transfo_C57_ab2_invivo.nii.gz'))
+    anat_files.remove(os.path.expanduser(
+        '~/mrm_transformed/transfo_C57_ab1_invivo.nii.gz'))
+    mice_ids = [os.path.basename(a)[11:] for a in anat_files]
     sammba_dices = []
     spm_dices = []
     original_dices = []
     for mouse_id in mice_ids:
-        if mouse_id == '_ab2_invivo.nii.gz':
-            atlas_id = '_Ab2_invivo.nii.gz'
-        elif mouse_id == '_y81_Invivo.nii.gz':
-            atlas_id = '_y81_invivo.nii.gz'
-        else:
-            atlas_id = mouse_id
-            
+        atlas_id = mouse_id
         sammba_mouse_atlas_file = fname_presuffix(atlas_id,
                                                   newpath=sammba_raw_dir,
-                                                  prefix='Atlas')
+                                                  prefix='transfo_Atlas')
         matrix_file = fname_presuffix(mouse_id,
                                       newpath=sammba_dir,
-                                      prefix='C57',
+                                      prefix='transfo_C57',
                                       suffix='_unifized_masked_aff.aff12.1D',
                                       use_ext=False)
         sammba_registered_atlas_file = fname_presuffix(atlas_id,
@@ -99,9 +95,15 @@ if __name__ == '__main__':
             interpolation='nearestneighbour',
             environ={'AFNI_DECONFLICT':'OVERWRITE'})
     
-        spm_registered_atlas_file = fname_presuffix(mouse_id,
+        if mouse_id == '_ab2_invivo.nii.gz':
+            atlas_id = '_Ab2_invivo.nii.gz'
+        elif mouse_id == '_y81_Invivo.nii.gz':
+            atlas_id = '_y81_invivo.nii.gz'
+        else:
+            atlas_id = mouse_id
+        spm_registered_atlas_file = fname_presuffix(atlas_id,
                                                     newpath=spm_dir,
-                                                    prefix='wAtlas',
+                                                    prefix='wtransfo_Atlas',
                                                     suffix='.nii',
                                                     use_ext=False)
     
@@ -142,10 +144,14 @@ if __name__ == '__main__':
 
     import matplotlib.pylab as plt
 
-    plt.boxplot(sammba_dices, positions=range(10), boxprops={'color':'g'})
-    plt.boxplot(spm_dices, positions=np.arange(10) + .15, boxprops={'color':'r'})
-    plt.boxplot(original_dices, positions=np.arange(10) + .3, boxprops={'color':'b'})
-
+    plt.boxplot(sammba_dices, positions=range(9), boxprops={'color':'g'},
+                medianprops={'color':'g'}, label='sammba')
+    plt.boxplot(spm_dices, positions=np.arange(9) + .15, boxprops={'color':'r'},
+                medianprops={'color':'g'}, label='spm')
+    plt.boxplot(original_dices, positions=np.arange(9) + .3,
+                boxprops={'color':'b'}, medianprops={'color':'g'},
+                label='original')
+    plt.legend()
     plt.ylabel('dice coefficient')
-    plt.savefig(os.path.expanduser('~/publications/appning/poster/figures/dice_boxplots.png'))
+    plt.savefig(os.path.expanduser('~/papers/appning/poster/figures/transfo_dice_boxplots.png'))
     plt.show()
