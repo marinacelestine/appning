@@ -4,10 +4,10 @@ from sammba.registration import template_registrator
 
 
 anat_files = glob.glob(os.path.expanduser(
-    '~/mrm_transformed/transfo_C57*.nii.gz'))
+    '~/mrm_bil2_transformed/bil2_transfo_C57*.nii.gz'))
 anat_files.remove(os.path.expanduser(
-    '~/mrm_transformed/transfo_C57_Az1_invivo.nii.gz'))
-output_dir = os.path.join(os.path.expanduser('~/mrm_transformed_preprocessed'))
+    '~/mrm_bil2_transformed/bil2_transfo_C57_Az1_invivo.nii.gz'))
+output_dir = os.path.join(os.path.expanduser('~/mrm_bil2_transformed_preprocessed'))
 template_file = os.path.expanduser(
     '~/nilearn_data/mrm_2010/Average_template_invivo.nii.gz')
 template_brain_mask_file = os.path.expanduser(
@@ -21,6 +21,6 @@ for anat_file in anat_files:
         template=template_file,
         caching=True,
         template_brain_mask=template_brain_mask_file,
-        registration_kind='nonlinear')
+        registration_kind='affine')
 
     registrator.fit_anat(anat_file)

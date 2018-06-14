@@ -71,6 +71,7 @@ if __name__ == '__main__':
         '~/mrm_transformed/transfo_C57_ab1_invivo.nii.gz'))
     mice_ids = [os.path.basename(a)[11:] for a in anat_files]
     sammba_dices = []
+    sammba_dices2 = []
     spm_dices = []
     original_dices = []
     for mouse_id in mice_ids:
@@ -83,6 +84,10 @@ if __name__ == '__main__':
                                       prefix='transfo_C57',
                                       suffix='_unifized_masked_aff.aff12.1D',
                                       use_ext=False)
+        warp_file = fname_presuffix(mouse_id,
+                                    newpath=sammba_dir,
+                                    prefix='transfo_C57',
+                                    suffix='_unifized_affine_general_warped_WARP')
         sammba_registered_atlas_file = fname_presuffix(atlas_id,
                                                        suffix='_allineated',
                                                        newpath=sammba_dir)
@@ -94,7 +99,19 @@ if __name__ == '__main__':
             out_file=sammba_registered_atlas_file,
             interpolation='nearestneighbour',
             environ={'AFNI_DECONFLICT':'OVERWRITE'})
-    
+
+        nwarp_apply = afni.NwarpApply().run
+        transforms = [warp_file, matrix_file]
+        warp = "'"
+        warp += ' '.join(transforms)
+        warp += "'"
+        out_warp_apply = nwarp_apply(in_file=sammba_mouse_atlas_file,
+                                     master=sammba_template_file,
+                                     warp=warp,
+                                     interp='nearestneighbor',
+                                     out_file=fname_presuffix(
+                                            sammba_registered_atlas_file,
+                                            suffix='_warped'))
         if mouse_id == '_ab2_invivo.nii.gz':
             atlas_id = '_Ab2_invivo.nii.gz'
         elif mouse_id == '_y81_Invivo.nii.gz':
@@ -125,33 +142,36 @@ if __name__ == '__main__':
         else:
             uncropped_spm_registered_atlas_file = spm_registered_atlas_file
 
-        sammba_mouse_labels, sammba_mouse_dices = dices(sammba_template_atlas_file,
-                                                        sammba_registered_atlas_file)
+        sammba_mouse_labels, sammba_mouse_dices = dices(
+            sammba_template_atlas_file, sammba_registered_atlas_file)
 
-        original_mouse_labels, original_mouse_dices = dices(sammba_template_atlas_file,
-                                                            sammba_mouse_atlas_file)
-
-        spm_mouse_labels, spm_mouse_dices = dices(spm_template_atlas_file,
-                                                  uncropped_spm_registered_atlas_file)
+        sammba_mouse_labels2, sammba_mouse_dices2 = dices(
+            sammba_template_atlas_file, out_warp_apply.outputs.out_file)
+        original_mouse_labels, original_mouse_dices = dices(
+            sammba_template_atlas_file, sammba_mouse_atlas_file)
+        spm_mouse_labels, spm_mouse_dices = dices(
+            spm_template_atlas_file, uncropped_spm_registered_atlas_file)
         np.testing.assert_array_equal(sammba_mouse_labels, spm_mouse_labels)
+        np.testing.assert_array_equal(sammba_mouse_labels2, spm_mouse_labels)
         for (sammba_dice, spm_dice, label) in zip(sammba_mouse_dices, spm_mouse_dices,
                                                   sammba_mouse_labels):
             print('DICE for region {0} : spm {1}, sammba{2}'.format(label, spm_dice,
                  sammba_dice))
         sammba_dices.append(sammba_mouse_dices)
+        sammba_dices2.append(sammba_mouse_dices2)
         spm_dices.append(spm_mouse_dices)
         original_dices.append(original_mouse_dices)
 
     import matplotlib.pylab as plt
 
     plt.boxplot(sammba_dices, positions=range(9), boxprops={'color':'g'},
-                medianprops={'color':'g'}, label='sammba')
+                medianprops={'color':'g'})
+    plt.boxplot(sammba_dices2, positions=range(9), boxprops={'color':'m'},
+                medianprops={'color':'m'})
     plt.boxplot(spm_dices, positions=np.arange(9) + .15, boxprops={'color':'r'},
-                medianprops={'color':'g'}, label='spm')
+                medianprops={'color':'r'})
     plt.boxplot(original_dices, positions=np.arange(9) + .3,
-                boxprops={'color':'b'}, medianprops={'color':'g'},
-                label='original')
-    plt.legend()
+                boxprops={'color':'b'}, medianprops={'color':'b'})
     plt.ylabel('dice coefficient')
     plt.savefig(os.path.expanduser('~/papers/appning/poster/figures/transfo_dice_boxplots.png'))
     plt.show()

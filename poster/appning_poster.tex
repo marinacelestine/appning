@@ -24,6 +24,8 @@
 \usepackage{booktabs} % Horizontal rules in tables
 \usepackage{relsize} % Used for making text smaller in some places
 \usepackage{url}
+\usepackage{multirow}
+\usepackage{multicol}
 
 \graphicspath{{figures/}} % Directory in which figures are stored
 
@@ -79,9 +81,10 @@ boxshade=plain
 The available software for \textcolor{emphsizecol}{\textbf{processing Small mammals neuroimaging}} data lacks maturity:
 
 \begin{itemize}
-\item Bruker DICOM to NIFTI conversion is not guaranteed
-\item Manual intervention is usually needed
-\item Can perform badly or even fail depending on the images quality
+\item Active efforts for Bruker format handling
+\item Usual manual initialization for registration
+\item Processing failure is not uncommon
+%depending on the images quality
 \end{itemize}
 
 sammba-MRI
@@ -96,24 +99,24 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 \headerbox{Data}{name=data,column=0,below=introduction}{
 
 \begin{center}
-\begin{tabular}{l l l}
+\begin{tabular}{c c c}
 \toprule
 \textbf{Dataset} & \textbf{Animals} & \textbf{scans} \\
 \midrule
-Brookhave 			& 12 C57 mice 		& anat T2 			  \\ %BL/6J, Bruker 9.4 T
-2008 \cite{ma:2008} & 3-4 months 		&					 	    \\%12-14 weeks
+Brookhaven's  			& 12 C57 mice 		& anat T2 			  \\ %BL/6J, Bruker 9.4 T
+database \cite{ma:2008}  & 3-4 months 		&					 	    \\%12-14 weeks
 	 	  			&					&							\\
-Inhouse 	  & 34 lemurs 		& anat T2 			\\% Bruker 11.7 T
-2017 	  &	15-60 months  	&							\\
+Inhouse 1	  & 34 lemurs 		& anat T2 			\\% Bruker 11.7 T
+ 	  &	15-60 months  	&							\\
 	 	  &					&							\\
-Inhouse	  &	10 C57 mice 		& anat T2  			\\% Bruker 11.7 T
-2017	  	  & 5-7 months 		& perfusion			  		\\
+Inhouse	2  &	10 C57 mice 		& anat T2  			\\% Bruker 11.7 T
+	  	  & 5-7 months 		& perfusion			  		\\
 	 	  &					&							\\
-Zerbi 	  & 15 C57 mice 		& anat T2 			 \\% Bruker 9.4 T
-2015 \cite{zerbi:2015} 	  & 2-3 months  	& BOLD-EPI   		 		\\
+Zurich test-	  & 15 C57 mice 		& anat T2 			 \\% Bruker 9.4 T
+retest data \cite{zerbi:2015}  	  & 2-3 months  	& BOLD-EPI   		 		\\
 \bottomrule
 \end{tabular}
-\captionof{table}{Data characteristics}
+%\captionof{table}{Data characteristics}
 \end{center}
  
 }
@@ -124,12 +127,21 @@ Zerbi 	  & 15 C57 mice 		& anat T2 			 \\% Bruker 9.4 T
 
 \headerbox{Materials and Methods}{name=methods,column=0,below=data}{
 
-Fusce at erat vitae metus porttitor auctor sit amet at ante. In id dolor tellus, non aliquet elit. Vestibulum bibendum, augue sed laoreet congue, enim nisi ultricies diam, ac pharetra mi dui ut sapien. Maecenas fermentum, neque ut scelerisque consequat, purus leo ultrices nulla, quis scelerisque risus elit non turpis. 
+Sammba-MRI  provides end-to-end pipelines to process and analyze multimodal images.
+It combines functionalities from various existing software packages to tackle small animal processing difficulties.
 
-\begin{enumerate}
-\item Cras ac ipsum eu nisl imperdiet interdum nunc bibendum, est in pulvinar facilisis, mi purus fringilla tellus, eu varius ipsum ante laoreet ipsum
-\item Sed cursus erat quis odio laoreet facilisis maecenas vehicula
-\end{enumerate}
+Sammba-MRI allows to
+
+\begin{itemize}
+\item convert Bruker DICOM files to Nifti-1.
+\item perform spatial registration by using ANTS, AFNI and RATS  \cite{yin:2010, oguz:2014}, all 
+leveraged  through nipype  \cite{gorgolewski:2011}.
+\item Estimate perfusion maps for FAIR EPI sequences.
+\end{itemize}
+
+Resting  state fMRI (rsfMRI) connectivity and brain images visualization are straightforward with nilearn  \cite{abraham:2014} once the registration is performed.
+
+
 }
 
 %----------------------------------------------------------------------------------------
@@ -138,12 +150,13 @@ Fusce at erat vitae metus porttitor auctor sit amet at ante. In id dolor tellus,
 
 \headerbox{References}{name=references,column=0,below=methods, above=bottom}{
 
-\smaller % Reduce the font size in this block
+%\smaller % Reduce the font size in this block
+
 \renewcommand{\section}[2]{\vskip 0.05em} % Get rid of the default "References" section title
 \nocite{*} % Insert publications even if they are not cited in the poster
 
 \bibliographystyle{unsrt}
-\bibliography{sample} % Use sample.bib as the bibliography file
+\tiny{\bibliography{sample}} % Use sample.bib as the bibliography file
 }
 
 %----------------------------------------------------------------------------------------
@@ -151,6 +164,8 @@ Fusce at erat vitae metus porttitor auctor sit amet at ante. In id dolor tellus,
 %----------------------------------------------------------------------------------------
 
 \headerbox{Results 1: Registration accuracy}{name=results1,span=2,column=1,row=0}{ % To reduce this block to 1 column width, remove 'span=2'
+
+Anatomical images  pre-registered to 
 
 Nunc sit amet sem ut nulla tincidunt mattis vel nec mauris. Vestibulum odio tellus, lobortis. Vel adipiscing, Aliquam dictum, ligula egestas commodo posuere, lectus lectus congue ligula, sed posuere urna lectus at nisi. Aenean commodo risus ut dolor (viverra scelerisque). Nullam varius, lacus et interdum hendrerit, odio orci ultrices mauris, id interdum eros mauris at urna. Fusce in nisi eros, sit amet volutpat turpis, \textbf{porttior magna} (commodo blandit euismod) \textbf{facilisis ornate magnis} (dis magnis). 
 
@@ -174,7 +189,7 @@ Treatment 3 & 0.0009271 & 0.296 \\
 %	RESULTS 2
 %----------------------------------------------------------------------------------------
 
-\headerbox{Results 2: Group studies}{name=results2,span=2,column=1,below=results1,above=bottom}{ % To reduce this block to 1 column width, remove 'span=2'
+\headerbox{Results 2: Group studies}{name=results2,span=2,column=1,below=results1}{ % To reduce this block to 1 column width, remove 'span=2'
 \textbf{\large{\textcolor{contrastcol}{Template creation}}}
 Studying   populations   of   animals   gains   precision   by   the   use   of   cohort   specific   templates.  
 Sammba-MRI   proposes   an   iterative   method   to   create   a   fine   anatomical   template   from   individual  
@@ -195,8 +210,8 @@ sequences. Figure 2 shows CBF map from a group of 10 mice (inhouse dataset).
 %------------------------------------------------
 \begin{center}
 \label{fig:cbf}
-\includegraphics[width=0.4\linewidth]{mean_cbf_y_no_title.jpg}
-\includegraphics[width=0.4\linewidth]{regional_cbf_4rois.jpeg}
+\includegraphics[width=0.4\linewidth]{mean_cbf_mricron2.png}
+\includegraphics[width=0.3\linewidth]{regional_cbf_4rois_black_bg.jpg}
 \captionof{figure}{Group   average   CBF   map (left); individual regional CBF in ml/100g/min (right)}
 \end{center}
 
@@ -219,13 +234,29 @@ regions are found even ​ without data post-processing ​ (Figures 3 and 4).
 \includegraphics[width=0.17\linewidth]{{component26.jpg}}
 \captionof{figure}{Bilateral ICA components}
 \end{center}
+}
+%----------------------------------------------------------------------------------------
+%	RESULTS 2
+%----------------------------------------------------------------------------------------
+
+\headerbox{Highlights}{name=conclusion,span=2,column=1,below=results2,above=bottom}{
+
+\begin{minipage}[t]{0.5\textwidth}
+Multimodal, multispecies\\
+Demos on public small animal data
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+Optimized pipeline rerunning\\
+Parallelization
+\end{minipage}
 
 %------------------------------------------------
 
 \begin{center}
-\large{\textcolor{emphsizecol}{\url{https://sammba-mri.github.io/}}}
+\large{\textcolor{emphsizecol}{\url{https://sammba-mri.github.io}}}
 \end{center}
 }
+
 %----------------------------------------------------------------------------------------
 
 \end{poster}
