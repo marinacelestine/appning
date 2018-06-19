@@ -8,8 +8,9 @@ import glob
 import numpy as np
 from nilearn._utils.niimg_conversions import check_niimg
 from nilearn import image
-from sammba.externals.nipype.interfaces import afni
+from sammba.externals.nipype.interfaces import afni, fsl
 from sammba.externals.nipype.utils.filemanip import fname_presuffix
+from skimage import measure
 
 
 def mask_arrays_to_dice(mask_data1, mask_data2):
@@ -17,6 +18,27 @@ def mask_arrays_to_dice(mask_data1, mask_data2):
     denominator = mask_data1.sum() + mask_data2.sum()
     return 2 * numerator / float(denominator)
 
+def compute_mask_contour(mask_file, write_dir=None, out_file=None):
+    mask_img = check_niimg(mask_file)
+    vertices, _, _, _ = measure.marching_cubes_lewiner(mask_img.get_data(), 0)  #marching_cubes_lewiner
+    vertices_minus = np.floor(vertices).astype(int)
+    vertices_plus = np.ceil(vertices).astype(int)
+    contour_data = np.zeros(mask_img.shape)
+    contour_data[vertices_minus.T[0],
+                 vertices_minus.T[1],
+                 vertices_minus.T[2]] = 1
+    contour_data[vertices_plus.T[0],
+                 vertices_plus.T[1],
+                 vertices_plus.T[2]] = 1
+    contour_img = image.new_img_like(mask_img, contour_data)
+    if write_dir is None:
+        write_dir = os.getcwd()
+
+    if out_file is None:
+        out_file = fname_presuffix(mask_file, suffix='_countour',
+                                   newpath=write_dir)
+    contour_img.to_filename(out_file)
+    return out_file
     
 def dices(labels_file1, labels_file2):
     data1 = check_niimg(labels_file1).get_data().astype(int)
@@ -54,20 +76,20 @@ if __name__ == '__main__':
     else:
         raise ValueError('Unknown user')
 
-    sammba_dir = os.path.expanduser('~/mrm_bil2_transformed_corrected_preprocessed')
-    sammba_raw_dir = os.path.expanduser('~/mrm_bil2_transformed/correct_headers')
+    sammba_dir = os.path.expanduser('~/mrm_reoriented_bil2_preprocessed')
+    sammba_raw_dir = os.path.expanduser('~/mrm_reoriented_bil2')
     sammba_template_file = os.path.expanduser(
-        '~/nilearn_data/mrm_2010/correct_headers/Average_template_invivo_corrected.nii.gz')
+        '~/mrm_reoriented_bil2/Average_template_invivo.nii.gz')
     sammba_template_atlas_file = os.path.expanduser(
-        '~/nilearn_data/mrm_2010/correct_headers/Average_atlas_invivo_corrected.nii.gz')
+        '~/mrm_reoriented_bil2/Average_atlas_invivo.nii.gz')
 
     anat_files = glob.glob(os.path.expanduser(
-        '~/mrm_bil2_transformed/correct_headers/bil2_transfo_C57*.nii.gz'))
+        '~/mrm_reoriented_bil2/bil2_transfo_C57*.nii.gz'))
     # SPM failed for yj1, custom brain mask with sammba
     anat_files.remove(os.path.expanduser(
-        '~/mrm_bil2_transformed/correct_headers/bil2_transfo_C57_yj1_invivo_corrected.nii.gz'))
+        '/home/salma/mrm_reoriented_bil2/bil2_transfo_C57_yj1_invivo.nii.gz'))
     anat_files.remove(os.path.expanduser(
-        '~/mrm_bil2_transformed/correct_headers/bil2_transfo_C57_Az1_invivo_corrected.nii.gz'))
+        '~/mrm_reoriented_bil2/bil2_transfo_C57_Az1_invivo.nii.gz'))
 #    anat_files.remove(os.path.expanduser(
 #        '~/mrm_bil2_transformed/bil2_transfo_C57_ab1_invivo.nii.gz'))
     mice_ids = [os.path.basename(a)[12:] for a in anat_files]
@@ -101,6 +123,10 @@ if __name__ == '__main__':
             final_interpolation='nearestneighbour',
             environ={'AFNI_DECONFLICT':'OVERWRITE'})
 
+        copy_geom = fsl.CopyGeom().run
+        out_copy_geom = copy_geom(dest_file=sammba_registered_atlas_file,
+                                  in_file=sammba_template_atlas_file)
+
         if os.path.isfile(warp_file):
             nwarp_apply = afni.NwarpApply().run
             transforms = [warp_file, matrix_file]
@@ -115,9 +141,9 @@ if __name__ == '__main__':
                                                 sammba_registered_atlas_file,
                                                 suffix='_warped'))
         spm_atlas_id = atlas_id.replace('_corrected', '')
-        if mouse_id == '_C57_ab2_invivo_corrected.nii.gz':
+        if mouse_id == '_C57_ab2_invivo.nii.gz':
             spm_atlas_id = '_Ab2_invivo.nii.gz'
-        elif mouse_id == '_C57_y81_Invivo_corrected.nii.gz':
+        elif mouse_id == '_C57_y81_Invivo.nii.gz':
             spm_atlas_id = '_y81_invivo.nii.gz'
 
         spm_registered_atlas_file = fname_presuffix(spm_atlas_id,
@@ -166,14 +192,81 @@ if __name__ == '__main__':
 
     import matplotlib.pylab as plt
 
-    plt.boxplot(np.array(sammba_dices), positions=range(20), boxprops={'color':'g'},
-                medianprops={'color':'g'})
-#    plt.boxplot(sammba_dices2, positions=range(9), boxprops={'color':'m'},
-#                medianprops={'color':'m'})
-    plt.boxplot(np.array(spm_dices), positions=np.arange(20) + .15, boxprops={'color':'r'},
-                medianprops={'color':'r'})
-    plt.boxplot(original_dices, positions=np.arange(9) + .3,
-                boxprops={'color':'b'}, medianprops={'color':'b'})
-    plt.ylabel('dice coefficient')
-    plt.savefig(os.path.expanduser('~/papers/appning/poster/figures/bil2_transfo_dice_boxplots.png'))
+
+    print(np.argmin(np.abs(np.array(sammba_dices).T -
+                           np.median(sammba_dices, axis=0)[:, np.newaxis]), axis=1))
+    
+
+    mask_imgs = [image.math_img('img=={}'.format(label), img=sammba_template_atlas_file)
+                 for label in range(1, 20)]
+    contour_imgs = [compute_mask_contour(mask_file, write_dir='/tmp',
+                                         out_file=fname_presuffix(sammba_template_atlas_file,
+                                                                  suffix='{}'.format(l))) for l, mask_file
+                                         in enumerate(mask_imgs)]
+    contour_img = image.math_img('np.sum(img, axis=-1)', img=contour_imgs)
+    contour_img.to_filename('/tmp/contour.nii.gz')
+    from nilearn import plotting
+
+    anat_file = fname_presuffix(mice_ids[7],
+                                newpath=sammba_dir,
+                                prefix='bil2_transfo',
+                                suffix='_unifized_affine_general')
+    atlas_file = fname_presuffix(mice_ids[7].replace('C57_', ''),
+                                newpath=sammba_dir,
+                                suffix='_allineated')
+
+    # 1.5 is good but shows mis accuracies
+    display = plotting.plot_anat('/tmp/anat.nii.gz', dim=-1.6, display_mode='z', cut_coords=[-2]) #-2
+    ventricles_mask_img1 = image.math_img('img==9', img=sammba_template_atlas_file)
+    ventricles_mask_img2 = image.math_img('img==10', img=sammba_template_atlas_file)
+    ventricles_mask_img3 = image.math_img('img==8', img=sammba_template_atlas_file)
+    ventricles_mask_img4 = image.math_img('img==14', img=sammba_template_atlas_file)
+    ventricles_mask_img5 = image.math_img('img==16', img=sammba_template_atlas_file)
+    display.add_contours(ventricles_mask_img1, colors='r')  # 2, 3, 10
+    display.add_contours(ventricles_mask_img2, colors='b')  # 2, 3, 10
+    display.add_contours(ventricles_mask_img3, colors='g')  # 2, 3, 10
+    display.add_contours(ventricles_mask_img4, colors='m')  # 2, 3, 10
+    display.add_contours(ventricles_mask_img5, colors='y')  # 2, 3, 10
+    plt.savefig('/home/salma/publications/appning/poster/figures/atlas_overlays_dim-1pt6.png',
+                facecolor='k', edgecolor='k')
+    plotting.show()
+
+    # 8 cerebellum, 1 hippocampus, 10 ventricles, 16 olfactory bulb
+    # 4 and 20 are small
+    # 6 internal capsule
+    plt.style.use('dark_background')
+    plt.figure(figsize=(3, 3))
+    colors = ['r'] * 20
+#    colors[8] = 'g'
+#    colors[10] = 'b'
+    colors[1] = 'c'
+    colors[9] = 'y'
+    labels = ['other regions'] * 20
+#    labels[7] = 'cerebellum'
+#    labels[0] = 'hippocampus'
+    labels[1] = 'corpus callosum'
+#    labels[4] = 'Anterior commissure'
+    labels[9] = 'ventricles'
+#    labels[16] = 'midbrain'
+    for spm_region_dices, sammba_region_dices, color, label in zip(np.array(spm_dices).T,
+                                                                   np.array(sammba_dices).T,
+                                                                   colors, labels):
+        if color != 'r':
+            plt.scatter(spm_region_dices, sammba_region_dices, c=color, label=label, s=5)
+        else:
+            plt.scatter(spm_region_dices, sammba_region_dices, c=color, s=5)
+
+    plt.scatter(spm_region_dices, sammba_region_dices, c=color, label=label, s=5)
+    plt.plot([0, 1], [0, 1], 'w')
+    plt.legend()
+    m = max(np.max(sammba_dices), np.max(spm_dices))
+    plt.xlim(.2 - .01, m + .01)
+    plt.ylim(.2- .01, m + .01)
+    ticks = [.3, .5, .7, .9]
+    plt.xticks(ticks)
+    plt.yticks(ticks)
+    plt.xlabel('SPM mouse')
+    plt.ylabel('sammba-MRI')
+    plt.subplots_adjust(top=.96, right=.99, bottom=.16, left=.19)
+    plt.savefig(os.path.expanduser('~/publications/appning/poster/figures/bil2_transfo_dice_boxplots.png'))
     plt.show()

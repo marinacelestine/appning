@@ -21,6 +21,9 @@ if __name__ == '__main__':
     elif os.path.expanduser('~') == '/home/salma':
         spm_dir = os.path.join('/home/salma/appning_data/Pmamobipet/mrm_2010',
                                'reoriented', 'bil2_transformed')
+        spm_transformed_dir = os.path.join(
+            '/home/salma/appning_data/Pmamobipet/mrm_2010/reoriented',
+            'bil2_transformed')
     else:
         raise ValueError('Unknown user')
 
@@ -82,30 +85,45 @@ if __name__ == '__main__':
                                         use_ext=False)
         print(anat_file)
         assert(os.path.isfile(raw_atlas_file))
-#        if os.path.isfile(param_file):
-        np.savetxt(param_file, transform, newline='    ',
-                   fmt='%10.10f')
+        if os.path.isfile(param_file):
+            np.savetxt(param_file, transform, newline='    ',
+                       fmt='%10.10f')
 
         allineate = afni.Allineate().run
-        out_allineate = allineate(
-            in_file=anat_file,
-            master=anat_file,
-            in_param_file=param_file,
-            nwarp='bilinear',
-            out_file=sammba_anat_file,
-            environ={'AFNI_DECONFLICT':'OVERWRITE'})
         copy_geom = fsl.CopyGeom().run
-        out_copy_geom = copy_geom(dest_file=sammba_anat_file,
-                                  in_file=anat_file)
-        out_allineate = allineate(
-            in_file=reoriented_anat_file,
-            master=reoriented_anat_file,
-            in_param_file=param_file,
-            nwarp='bilinear',
-            out_file=spm_anat_file,
-            environ={'AFNI_DECONFLICT':'OVERWRITE'})
-        out_copy_geom = copy_geom(dest_file=spm_anat_file,
-                                  in_file=reoriented_anat_file)
+        if False:
+            out_allineate = allineate(
+                in_file=anat_file,
+                master=anat_file,
+                in_param_file=param_file,
+                nwarp='bilinear',
+                out_file=sammba_anat_file,
+                #environ={'AFNI_DECONFLICT':'OVERWRITE'}
+                )
+            out_copy_geom = copy_geom(dest_file=sammba_anat_file,
+                                      in_file=anat_file)
+            out_allineate = allineate(
+                in_file=reoriented_anat_file,
+                master=reoriented_anat_file,
+                in_param_file=param_file,
+                nwarp='bilinear',
+                out_file=spm_anat_file,
+                #environ={'AFNI_DECONFLICT':'OVERWRITE'}
+                )
+            out_copy_geom = copy_geom(dest_file=spm_anat_file,
+                                      in_file=reoriented_anat_file)
+            out_allineate = allineate(
+                in_file=reoriented_atlas_file,
+                master=reoriented_atlas_file,
+                in_param_file=param_file,
+                nwarp='bilinear',
+                final_interpolation='nearestneighbour',
+                out_file=spm_atlas_file,
+                #environ={'AFNI_DECONFLICT':'OVERWRITE'}
+                )
+            out_copy_geom = copy_geom(dest_file=spm_atlas_file,
+                                      in_file=reoriented_atlas_file)
+
         out_allineate = allineate(
             in_file=raw_atlas_file,
             master=raw_atlas_file,
@@ -113,16 +131,7 @@ if __name__ == '__main__':
             nwarp='bilinear',
             final_interpolation='nearestneighbour',
             out_file=sammba_atlas_file,
-            environ={'AFNI_DECONFLICT':'OVERWRITE'})
+            environ={'AFNI_DECONFLICT':'OVERWRITE'}
+            )
         out_copy_geom = copy_geom(dest_file=sammba_atlas_file,
                                   in_file=raw_atlas_file)
-        out_allineate = allineate(
-            in_file=reoriented_atlas_file,
-            master=reoriented_atlas_file,
-            in_param_file=param_file,
-            nwarp='bilinear',
-            final_interpolation='nearestneighbour',
-            out_file=spm_atlas_file,
-            environ={'AFNI_DECONFLICT':'OVERWRITE'})
-        out_copy_geom = copy_geom(dest_file=spm_atlas_file,
-                                  in_file=reoriented_atlas_file)

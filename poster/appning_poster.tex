@@ -35,7 +35,7 @@
 \definecolor{headerfontcol}{RGB}{0,0,0} % Text color for the header text in the content boxes
 \definecolor{boxcolor}{RGB}{186,215,230} % Background color for the content in the content boxes
 \definecolor{contrastcol}{RGB}{250,85,10} % Contrast color
-\definecolor{emphsizecol}{RGB}{100,250,100} % Contrast color
+\definecolor{emphsizecol}{RGB}{0,200,0} % Contrast color
 
 \begin{document}
 
@@ -98,6 +98,8 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 
 \headerbox{Data}{name=data,column=0,below=introduction}{
 
+4 Bruker datasets have been used
+
 \begin{center}
 \begin{tabular}{c c c}
 \toprule
@@ -106,8 +108,8 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 Brookhaven's  			& 12 C57 mice 		& anat T2 			  \\ %BL/6J, Bruker 9.4 T
 database \cite{ma:2008}  & 3-4 months 		&					 	    \\%12-14 weeks
 	 	  			&					&							\\
-Inhouse 1	  & 34 lemurs 		& anat T2 			\\% Bruker 11.7 T
- 	  &	15-60 months  	&							\\
+Inhouse 1 \cite{nadkarni:2017}  & 34 lemurs 		& anat T2 			\\% Bruker 11.7 T
+	  &	15-60 months  	&							\\
 	 	  &					&							\\
 Inhouse	2  &	10 C57 mice 		& anat T2  			\\% Bruker 11.7 T
 	  	  & 5-7 months 		& perfusion			  		\\
@@ -164,25 +166,33 @@ Resting  state fMRI (rsfMRI) connectivity and brain images visualization are str
 %----------------------------------------------------------------------------------------
 
 \headerbox{Results 1: Registration accuracy}{name=results1,span=2,column=1,row=0}{ % To reduce this block to 1 column width, remove 'span=2'
+\begin{minipage}[t]{0.45\textwidth}
+Registration accuracy has been evaluated on Brookhaven's data by measuring the correspondence of segmented structures between individual images registered 
+to their average template and the average atlas.
+Because the shared individual images have been pre-registered to one reference image, they have been submitted to slight random quadratic deformations\footnote{Normally distributed coefficients with std=$0.1$ mm for translation, $0.1$ degrees for rotation, $0.02$ mm for scaling, $0.02$ mm for shear and $0.005$ mm for the remaining $31$ polynomial coefficients.} before performing registration.
 
-Anatomical images  pre-registered to 
+For comparison purpose, registration has been repeated using SPM mouse \cite{sawiak:2009}.
+Regional overlap was measured
+%between each region in the average atlas and the transformed mice atlases 
+using Dice's coefficient.
+Figure 1 shows that sammba-MRI registration achieves
+high overlap values and outperforms SPM mouse in the majority of cases.
+\end{minipage}\hspace{1em}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+\label{fig:dice}
+\includegraphics[height=.1\textheight]{bil2_transfo_dice_boxplots.png}
+\includegraphics[height=.1\textheight]{atlas_overlays_dim-1pt6.png}
+\captionof{figure}{Dice's coefficient per region for registered individual atlases (left); typical registered mouse image with average segmentation superimposed as coloured lines (right).}
+\end{center}
+\end{minipage}
 
-Nunc sit amet sem ut nulla tincidunt mattis vel nec mauris. Vestibulum odio tellus, lobortis. Vel adipiscing, Aliquam dictum, ligula egestas commodo posuere, lectus lectus congue ligula, sed posuere urna lectus at nisi. Aenean commodo risus ut dolor (viverra scelerisque). Nullam varius, lacus et interdum hendrerit, odio orci ultrices mauris, id interdum eros mauris at urna. Fusce in nisi eros, sit amet volutpat turpis, \textbf{porttior magna} (commodo blandit euismod) \textbf{facilisis ornate magnis} (dis magnis). 
 
 %------------------------------------------------
 
-\begin{center}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\captionof{table}{Table caption}
-\end{center}
+
+
+
 }
 
 %----------------------------------------------------------------------------------------
@@ -190,28 +200,34 @@ Treatment 3 & 0.0009271 & 0.296 \\
 %----------------------------------------------------------------------------------------
 
 \headerbox{Results 2: Group studies}{name=results2,span=2,column=1,below=results1}{ % To reduce this block to 1 column width, remove 'span=2'
+\begin{minipage}[t]{0.55\textwidth}
 \textbf{\large{\textcolor{contrastcol}{Template creation}}}
 Studying   populations   of   animals   gains   precision   by   the   use   of   cohort   specific   templates.  
 Sammba-MRI   proposes   an   iterative   method   to   create   a   fine   anatomical   template   from   individual  
-structural   MRI   scans.   We   show   in   Figure \ref{fig:template}   the template  created   from   34   mouse  
-lemurs (inhouse dataset). The method adapts to different animal species.
-
+structural   MRI   scans.   We   show   in   Figure 2 the template  created   from   34   mouse  
+lemurs (inhouse dataset 1). The method adapts to different animal species.
+\end{minipage}\hspace{1em}
+\begin{minipage}[t]{0.4\textwidth}
 \begin{center}
 \label{fig:template}
-\includegraphics[width=0.4\linewidth]{sfn_template.jpg}
+\includegraphics[width=.95\linewidth]{sfn_template.jpg}
 \captionof{figure}{mouse lemur template}
 \end{center}
+\end{minipage}
+
+
 %------------------------------------------------
 \textbf{\large{\textcolor{contrastcol}{Cerebral Blood Flow quantification}}}
 Estimating   the   cerebral   blood   flow   (CBF)   in   animals   is   challenging   due   to   the   low   SNR   and   lack   of  
 sensitivity.   Sammba-MRI   allows   to   estimate   quantitative   CBF   maps   for   Bruker-FAIR   EPI  
-sequences. Figure 2 shows CBF map from a group of 10 mice (inhouse dataset). 
+sequences. Figure 3 shows the CBF map from a group of 10 mice (inhouse dataset 2). 
 
 %------------------------------------------------
 \begin{center}
 \label{fig:cbf}
-\includegraphics[width=0.4\linewidth]{mean_cbf_mricron2.png}
-\includegraphics[width=0.3\linewidth]{regional_cbf_4rois_black_bg.jpg}
+\includegraphics[height=.1\textheight]{mean_cbf_mricron2.png}
+\hspace{3em}
+\includegraphics[height=.1\textheight]{regional_cbf_4rois_black_bg.jpg}
 \captionof{figure}{Group   average   CBF   map (left); individual regional CBF in ml/100g/min (right)}
 \end{center}
 
@@ -219,7 +235,7 @@ sequences. Figure 2 shows CBF map from a group of 10 mice (inhouse dataset).
 \textbf{\large\textcolor{contrastcol}{{Resting state networks}}}
 Resting   state   spatial   networks   extraction   can   be   done   using   ICA.   Using   sammba-MRI,   we  
 performed   ICA   on   a   group   of   15   mice      from   a   public   dataset   [6].   Relevant   bilateral  
-regions are found even ​ without data post-processing ​ (Figures 3 and 4).
+regions are found even without data post-processing (Figure 4).
 
 %------------------------------------------------
 \begin{center}
@@ -242,18 +258,18 @@ regions are found even ​ without data post-processing ​ (Figures 3 and 4).
 \headerbox{Highlights}{name=conclusion,span=2,column=1,below=results2,above=bottom}{
 
 \begin{minipage}[t]{0.5\textwidth}
-Multimodal, multispecies\\
-Demos on public small animal data
+\textbf{Multimodal, multispecies}\\
+\textbf{Demos on public small animal data}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
-Optimized pipeline rerunning\\
-Parallelization
+\textbf{Optimized pipeline rerunning}\\
+\textbf{Parallelization}
 \end{minipage}
 
 %------------------------------------------------
 
 \begin{center}
-\large{\textcolor{emphsizecol}{\url{https://sammba-mri.github.io}}}
+\textbf{\Large{\textcolor{emphsizecol}{\url{https://sammba-mri.github.io}}}}
 \end{center}
 }
 
