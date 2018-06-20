@@ -18,6 +18,8 @@ if __name__ == '__main__':
         '~/nilearn_data/mrm_2010/correct_headers/C57*.nii.gz'))
     anat_files.remove(os.path.expanduser(
         '~/nilearn_data/mrm_2010/correct_headers/C57_ab1_invivo_corrected.nii.gz'))
+    anat_files = [os.path.expanduser(
+        '~/nilearn_data/mrm_2010/correct_headers/C57_Az1_invivo_corrected.nii.gz')]
 
     # Generate random transforms
     for anat_file in anat_files:
@@ -67,3 +69,4 @@ if __name__ == '__main__':
             )
         out_copy_geom = copy_geom(dest_file=sammba_atlas_file,
                                   in_file=raw_atlas_file)
+        stop

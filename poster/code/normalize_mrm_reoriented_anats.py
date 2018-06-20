@@ -10,7 +10,7 @@ from sammba.externals.nipype.utils.filemanip import fname_presuffix
 
 
 anat_files = glob.glob(os.path.expanduser(
-    '~/mrm_reoriented_bil2/bil2_transfo_C57*.nii.gz'))
+    '~/mrm_reoriented_bil2/bil2_transfo_C57*Az1*.nii.gz'))
 output_dir = os.path.expanduser('~/mrm_reoriented_bil2_preprocessed')
 
 # Corrected header
@@ -55,3 +55,4 @@ for anat_file in anat_files:
         registrator.fit_anat(anat_file, brain_mask_file=out_mm.outputs.out_file)
     else:
         registrator.fit_anat(anat_file)
+    stop

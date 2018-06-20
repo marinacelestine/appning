@@ -57,7 +57,7 @@
 
 
 \usepackage[loadonly]{enumitem}
-
+\usepackage{url}
 \usepackage{hyperref}
 
 
@@ -149,14 +149,15 @@
 
 %%--- beginning of the talk -----
 
-\title{Relative influence of connectivity and proximity to epicenters on the
-topography of Alzheimer's disease lesions}
-\author[Salma Bougacha]{with Gaël Chételat, Marc Dhenain, Brigitte Landeau,
-Mikaël Naveau and Ashish Raj}%{Salma Bougacha}
-\date{2018, Match 23}
-
+\title{Sammba-MRI: SmAll MaMmals BrAin MRI in Python}
+\author[Salma Bougacha]{Salma Bougacha, Nachiket Nadkarni, Cl\'ement Garin, Marc Dhenain}%{Salma Bougacha}
+\date{2018, June 22}
+\titlegraphic{%
+   \includegraphics[scale=.4]{Images/mircen_black_bg.png}\hspace*{3cm}~%
+   \includegraphics[scale=.4]{Images/cyceron_black_bg.png}\hspace*{0.5cm}%
+}
 \usenavigationsymbolstemplate{}
-\institute[CEA] {}
+\institute[APPNING]{APPNING Workshop, Paris}
 
 \usepackage{lmodern}
 
@@ -194,11 +195,6 @@ Mikaël Naveau and Ashish Raj}%{Salma Bougacha}
 
 \frame{
 \titlepage
-%\begin{figure}
-%\includegraphics[width=0.4\linewidth]{Images/mircen.pdf}
-%\hspace*{0.2\linewidth}
-%\includegraphics[width=0.3\linewidth]{Images/cyceron.pdf}
-%\end{figure}
 }
 %-TOC with current section and all associated subsections highlighted-------
 \AtBeginSection[] % Do nothing for \section*
@@ -219,194 +215,67 @@ Mikaël Naveau and Ashish Raj}%{Salma Bougacha}
 
 %---------------------------------------------------------
 \begin{frame}{Frame title 1}
-\frametitle{AD lesions and the healthy brain connectome}
- \begin{itemize}
- \item {\textcolor{cyan}{Hubs}} of the functional/structural connectome mirror lesions patterns \myciting{Buckner et al., 2009, Crossley et al., 2014}
- \vspace*{0.02\linewidth}
-% \item Atrophy and hypometabolism accumulate in persistent regions of the structural connectome [Raj1, Raj2]
-% \vspace*{0.02\linewidth}
- \item {\textcolor{yellow}{Functional proximity}} to epicentre predicts atrophy \myciting{Zhou et al., 2012}
- \vspace*{0.02\linewidth}
- \item Structural proximity to epicentre is related to A$\beta$ level \myciting{Itturia-Medina et al., 2014}
- \vspace*{0.02\linewidth}
- \end{itemize}
-\end{frame}
-%Buckner RL, Sepulcre J, Talukdar T, Krienen FM, Liu H, et al. (2009) Cortical
-%hubs  revealed  by  intrinsic  functional  connectivity:  mapping,  assessment  of
-%stability, and relation to Alzheimer’s disease. J Neurosci 29: 1860–1873.
-%Crossley N a., Mechelli a., Scott J, Carletti F, Fox PT, et al. (2014) The hubs of
-%the  human  connectome  are  generally  implicated  in  the  anatomy  of  brain
-%disorders. Brain 137(8): 2382–2395 [anatomical connectivity]
-%---------------------------------------------------------
-\begin{frame}{Frame title 1}
-\frametitle{Other possible proximities}
+\frametitle{Features}
+
   \begin{center} 
     \begin{columns}
 
       \begin{column}{0.5\textwidth}
-        \begin{tabular}{c} 
-	   \includegraphics[width=0.67\linewidth]{Images/fiber_length_distance.pdf}\\
-		{Fiber length}
-        \end{tabular}   
+ \begin{itemize}
+ \item Bruker DICOM to NIFTI conversion
+ \vspace*{0.1\linewidth}
+ \item Registration to standard
+ \vspace*{0.1\linewidth}
+ \item Between modalities registration 
+ %\myciting{Buckner et al., 2009, Crossley et al., 2014}
+ \end{itemize}
       \end{column}
 
       \begin{column}{0.5\textwidth}
-        \begin{tabular}{c} 
-		\includegraphics[width=\linewidth]{Images/cortical_distance.pdf}\\
-		{Cortical}
-		\end{tabular}   
+ \begin{itemize}
+ \item Template creation
+ \vspace*{0.2\linewidth}
+ \item Perfusion FAIR processing
+ \end{itemize}
       \end{column}
 
      \end{columns}
-     \vspace*{.1\textwidth}
-	 Or just 3D {\textcolor{green}{Euclidean}}
    \end{center}
+
 
 \end{frame}
 %---------------------------------------------------------
 \begin{frame}{Frame title 1}
-\frametitle{What is the relative importance of different lesions predictors ?}
- \begin{itemize}
- \item Functional hubness and \textcolor{yellow}{proximity} to the epicentre are differentially related to AD biomarkers \myciting{Mutlu  et al., 2017}
- \vspace*{0.02\linewidth}
- \item 2 Global connectome predictors + 5 Epicentre related predictors
- \vspace*{0.02\linewidth}
- \item Linear prediction model with cross-validation
- \end{itemize}
-\end{frame}
-%---------------------------------------------------------
-\begin{frame}{Frame title 1}
-\frametitle{AD lesions}
- 48 A$\beta$+ MCI and AD, 42 age-matched A$\beta$- controls from IMAP 
-
+\frametitle{Results}
   \begin{center} 
     \begin{columns}
-
-      \begin{column}{0.33\textwidth}
-        \begin{tabular}{c} 
-	   \includegraphics[width=\linewidth]{Images/voxelwise_atrophy.pdf}\\
-		\myred{Atrophy}\\ bilateral amygdala \\ {parahippocampal gyrus}
-        \end{tabular}   
-      \end{column}
-
-      \begin{column}{0.33\textwidth}
-        \begin{tabular}{c} 
-	   \includegraphics[width=\linewidth]{Images/voxelwise_hypo.pdf}\\
-		\myred{Hypometabolism} \\ left angular gyrus \\ bilateral precuneus 
-		\end{tabular}   
-      \end{column}
-
-      \begin{column}{0.33\textwidth}
-        \begin{tabular}{c} 
-	   \includegraphics[width=\linewidth]{Images/voxelwise_abeta.pdf}\\
-		\myred{A$\beta$ deposition}\\ bilateral precuneus \\ orbital sulcus 
-		\end{tabular}   
-      \end{column}
-
-     \end{columns}
-   \end{center}
-
-%Atrophy: Parahippocampal regions
-% Hypo: BN_Atlas_246_1mm, epicenters ['right A39rd, rostrodorsal area 39(Hip3)' 'right A31, area 31 (Lc1)'
-% 'left A23d, dorsal area 23' 'right A23d, dorsal area 23']
-%AICHA, epicenters ['G_Angular-1-L' 'G_Precuneus-3-L' 'G_Precuneus-7-R' 'G_Precuneus-3-R']
-
-%Abeta: ['left A31, area 31 (Lc1)' 'left A23d, dorsal area 23'
-% 'left A11l, lateral area 11']
-%AICHA, epicenters ['G_Precuneus-3-L' 'G_Precuneus-3-R' 'S_Orbital-1-L' 'S_Orbital-2-L']
- 
- \end{frame}
-%---------------------------------------------------------
-\begin{frame}{Frame title 1}
-\frametitle{Regions definition}
-  \begin{center} 
-    \begin{columns}
-
-      \begin{column}{0.35\textwidth}
-        \begin{tabular}{c} 
-	   \includegraphics[width=\linewidth]{Images/bn.pdf}\\
-		\myred{Brainnetome}\\ 264 ROIs\\ from tractography
-        \end{tabular}   
-      \end{column}
-
-      \begin{column}{0.35\textwidth}
-        \begin{tabular}{c} 
-		\includegraphics[width=\linewidth]{Images/aicha.pdf}\\
-		\myred{AICHA}\\ 384 ROIs \\from functional connectivity
-		\end{tabular}   
-      \end{column}
-
-     \end{columns}
-   \end{center}
- \end{frame}
-%---------------------------------------------------------
-\begin{frame}{Frame title 1}
-\frametitle{Predictors estimation}
- \begin{itemize}
- \item fMRI: 45 intermediate healthy adults from IMAP
- \vspace*{0.02\linewidth}
- \item dMRI: 105 intermediate healthy adults from CAMCAN %(40-60 years)
- \vspace*{0.02\linewidth}
- \end{itemize}
-  \begin{center} 
-    \begin{columns}
+	\hspace*{1cm}
 
       \begin{column}{0.45\textwidth}
+
         \begin{tabular}{c} 
-	   \includegraphics[width=0.9\linewidth]{Images/aicha_func_connectome.pdf}\\
-		{Functional connectome}
+	   \includegraphics[width=0.6\linewidth]{Images/atlas_overlays_dim-1pt6.png}\\
+		{High registration accuracy}
+        \end{tabular}   
+        \hspace*{.4cm}
+        \begin{tabular}{c} 
+	   \includegraphics[width=0.6\linewidth]{Images/mean_cbf_mricron2.png}\\
+		{Cerebral blood flow}\\
+		{quantification}
         \end{tabular}   
       \end{column}
 
-      \begin{column}{0.45\textwidth}
+      \begin{column}{0.55\textwidth}
         \begin{tabular}{c} 
-		\includegraphics[width=0.9\linewidth]{Images/aicha_struct_connectome.pdf}\\
-		{Structural connectome}
+	   \includegraphics[width=0.7\linewidth]{Images/component26_not_annotated.png}\\
+		{Straightforward resting state}\\
+		{networks extraction}
+        \end{tabular}   
+       \begin{tabular}{c} 
+		\includegraphics[width=.7\linewidth]{Images/sfn_template.jpg}\\
+		{Fine mouse lemur template}\\
 		\end{tabular}   
-      \end{column}
-
-     \end{columns}
-   \end{center}
-\end{frame}
-%---------------------------------------------------------
-\begin{frame}{Frame title 1}
-\frametitle{Atrophy contributors}
-  \begin{center} 
-    \begin{columns}
-
-      \begin{column}{0.7\textwidth}
-        \begin{tabular}{l} 
-	   \includegraphics[width=\linewidth]{Images/atrophy_7_features_BA_pratts.pdf}\\
-        \end{tabular}   
-      \end{column}
-
-      \begin{column}{0.3\textwidth}
-		\begin{itemize}
-		\item Mainly {\textcolor{yellow}{functional proximity}} and {\textcolor{green}{euclidean proximity}}.
-		\item Low prediction score.		
-		\end{itemize}
-      \end{column}
-
-     \end{columns}
-   \end{center}
-\end{frame}
-%---------------------------------------------------------
-\begin{frame}{Frame title 1}
-\frametitle{Hypometabolism contributors}
-  \begin{center} 
-    \begin{columns}
-
-      \begin{column}{0.7\textwidth}
-        \begin{tabular}{l} 
-	   \includegraphics[width=\linewidth]{Images/hypo_7_features_BA_pratts.pdf}\\
-        \end{tabular}   
-      \end{column}
-
-      \begin{column}{0.3\textwidth}
-		\begin{itemize}
-		\item Mainly {\textcolor{yellow}{functional proximity}}.
-		\end{itemize}
-      \end{column}
+       \end{column}
 
      \end{columns}
    \end{center}
@@ -414,47 +283,15 @@ Mikaël Naveau and Ashish Raj}%{Salma Bougacha}
 \end{frame}
 %---------------------------------------------------------
 \begin{frame}{Frame title 1}
-\frametitle{A$\beta$ deposition contributors}
-  \begin{center} 
-    \begin{columns}
-
-      \begin{column}{0.7\textwidth}
-        \begin{tabular}{l} 
-	   \includegraphics[width=\linewidth]{Images/abeta_7_features_BA_pratts.pdf}\\
-        \end{tabular}   
-      \end{column}
-
-      \begin{column}{0.3\textwidth}
-		\begin{enumerate}
-		\item {\textcolor{yellow}{functional proximity}}.
-		\item {\textcolor{cyan}{Functional hubness}}.
-		\end{enumerate}
-      \end{column}
-
-     \end{columns}
-   \end{center}
-\end{frame}
-%---------------------------------------------------------
-\begin{frame}{Frame title 1}
-\frametitle{Improve atrophy prediction}
-  \begin{center} 
-    \begin{columns}
-
-      \begin{column}{0.7\textwidth}
-        \begin{tabular}{l} 
-	   \includegraphics[width=\linewidth]{Images/atrophy_9_features_BA_pratts.pdf}\\
-        \end{tabular}   
-      \end{column}
-
-      \begin{column}{0.3\textwidth}
-		\begin{enumerate}
-		\item Still mainly {\textcolor{yellow}{functional proximity}} and {\textcolor{magenta}{euclidean proximity}}.
-		\item {\textcolor{orange}{Structural eigenmode}}.				
-		\end{enumerate}
-      \end{column}
-
-     \end{columns}
-   \end{center}
+\frametitle{You want to try it ?}
+\vspace*{3cm}
+\begin{center}
+\huge{\textcolor{yellow}{\url{https://sammba-mri.github.io}}}
+\end{center}
+\vspace*{4cm}
+%\includegraphics[width=.4\linewidth]{Images/python_logo.png}
+%\hspace*{4cm}
+%\includegraphics[width=.2\linewidth]{Images/github_logo_name3.png}
 \end{frame}
 %---------------------------------------------------------
 %

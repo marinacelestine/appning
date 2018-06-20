@@ -34,8 +34,8 @@
 \definecolor{headercol2}{RGB}{80,80,80} % Background color for the header in the content boxes (right side)
 \definecolor{headerfontcol}{RGB}{0,0,0} % Text color for the header text in the content boxes
 \definecolor{boxcolor}{RGB}{186,215,230} % Background color for the content in the content boxes
-\definecolor{contrastcol}{RGB}{250,85,10} % Contrast color
-\definecolor{emphsizecol}{RGB}{0,200,0} % Contrast color
+\definecolor{emphsizecol}{RGB}{250,85,10} % Contrast color
+\definecolor{contrastcol}{RGB}{0,200,0} % Contrast color
 
 \begin{document}
 
@@ -78,7 +78,7 @@ boxshade=plain
 
 \headerbox{Introduction}{name=introduction,column=0,row=0}{
 
-The available software for \textcolor{emphsizecol}{\textbf{processing Small mammals neuroimaging}} data lacks maturity:
+The available software for processing small mammals neuroimaging data lacks maturity:
 
 \begin{itemize}
 \item Active efforts for Bruker format handling
@@ -88,7 +88,7 @@ The available software for \textcolor{emphsizecol}{\textbf{processing Small mamm
 \end{itemize}
 
 sammba-MRI
-enables fluent scriptable analysis workflows, from DICOM conversion to results visualization.
+enables  \textcolor{emphsizecol}{\textbf{fluent scriptable}} analysis workflows, from DICOM conversion to results visualization.
 
 }
 
@@ -132,16 +132,16 @@ retest data \cite{zerbi:2015}  	  & 2-3 months  	& BOLD-EPI   		 		\\
 Sammba-MRI  provides end-to-end pipelines to process and analyze multimodal images.
 It combines functionalities from various existing software packages to tackle small animal processing difficulties.
 
-Sammba-MRI allows to
+Sammba-MRI allows to:
 
 \begin{itemize}
-\item convert Bruker DICOM files to Nifti-1.
-\item perform spatial registration by using ANTS, AFNI and RATS  \cite{yin:2010, oguz:2014}, all 
-leveraged  through nipype  \cite{gorgolewski:2011}.
-\item Estimate perfusion maps for FAIR EPI sequences.
+\item \textcolor{emphsizecol}{\textbf{convert Bruker}} DICOM files to NIFTI-1
+\item \textcolor{emphsizecol}{\textbf{perform registration}} by using ANTS, AFNI, FSL and RATS  \cite{yin:2010, oguz:2014}, all 
+leveraged  through nipype  \cite{gorgolewski:2011}
+\item \textcolor{emphsizecol}{\textbf{estimate perfusion}} maps for FAIR EPI sequences
 \end{itemize}
 
-Resting  state fMRI (rsfMRI) connectivity and brain images visualization are straightforward with nilearn  \cite{abraham:2014} once the registration is performed.
+Resting  state fMRI (rsfMRI) \textcolor{emphsizecol}{\textbf{connectivity analysis}} and brain images \textcolor{emphsizecol}{\textbf{visualization}} are straightforward with nilearn  \cite{abraham:2014} once the registration is performed.
 
 
 }
@@ -167,23 +167,23 @@ Resting  state fMRI (rsfMRI) connectivity and brain images visualization are str
 
 \headerbox{Results 1: Registration accuracy}{name=results1,span=2,column=1,row=0}{ % To reduce this block to 1 column width, remove 'span=2'
 \begin{minipage}[t]{0.45\textwidth}
-Registration accuracy has been evaluated on Brookhaven's data by measuring the correspondence of segmented structures between individual images registered 
-to their average template and the average atlas.
+Registration accuracy has been evaluated on Brookhaven's data \cite{ma:2008} by measuring the correspondence of segmented structures between individual images registered 
+to their average template and the template itself.
 Because the shared individual images have been pre-registered to one reference image, they have been submitted to slight random quadratic deformations\footnote{Normally distributed coefficients with std=$0.1$ mm for translation, $0.1$ degrees for rotation, $0.02$ mm for scaling, $0.02$ mm for shear and $0.005$ mm for the remaining $31$ polynomial coefficients.} before performing registration.
 
-For comparison purpose, registration has been repeated using SPM mouse \cite{sawiak:2009}.
+For comparison purposes, registration has been repeated using SPM mouse \cite{sawiak:2009}.
 Regional overlap was measured
 %between each region in the average atlas and the transformed mice atlases 
 using Dice's coefficient.
 Figure 1 shows that sammba-MRI registration achieves
 high overlap values and outperforms SPM mouse in the majority of cases.
-\end{minipage}\hspace{1em}
-\begin{minipage}[t]{0.5\textwidth}
+\end{minipage}\hspace{.2em}
+\begin{minipage}[t]{0.54\textwidth}
 \begin{center}
 \label{fig:dice}
-\includegraphics[height=.1\textheight]{bil2_transfo_dice_boxplots.png}
-\includegraphics[height=.1\textheight]{atlas_overlays_dim-1pt6.png}
-\captionof{figure}{Dice's coefficient per region for registered individual atlases (left); typical registered mouse image with average segmentation superimposed as coloured lines (right).}
+\includegraphics[height=.12\textheight]{bil2_transfo_dice_boxplots.png}
+\includegraphics[height=.12\textheight]{atlas_overlays_dim-1pt6.png}
+\captionof{figure}{Dice's coefficient per region and animal (left); typical registered mouse image with average atlas contours superimposed as coloured lines (right).}
 \end{center}
 \end{minipage}
 
@@ -202,10 +202,10 @@ high overlap values and outperforms SPM mouse in the majority of cases.
 \headerbox{Results 2: Group studies}{name=results2,span=2,column=1,below=results1}{ % To reduce this block to 1 column width, remove 'span=2'
 \begin{minipage}[t]{0.55\textwidth}
 \textbf{\large{\textcolor{contrastcol}{Template creation}}}
-Studying   populations   of   animals   gains   precision   by   the   use   of   cohort   specific   templates.  
+Studying   populations   of   animals   gains   precision   via   the   use   of   cohort   specific   templates.  
 Sammba-MRI   proposes   an   iterative   method   to   create   a   fine   anatomical   template   from   individual  
 structural   MRI   scans.   We   show   in   Figure 2 the template  created   from   34   mouse  
-lemurs (inhouse dataset 1). The method adapts to different animal species.
+lemurs (inhouse dataset 1 \cite{nadkarni:2017}). The method adapts to different animal species.
 \end{minipage}\hspace{1em}
 \begin{minipage}[t]{0.4\textwidth}
 \begin{center}
@@ -217,10 +217,10 @@ lemurs (inhouse dataset 1). The method adapts to different animal species.
 
 
 %------------------------------------------------
-\textbf{\large{\textcolor{contrastcol}{Cerebral Blood Flow quantification}}}
+\textbf{\large{\textcolor{contrastcol}{Cerebral blood flow quantification}}}
 Estimating   the   cerebral   blood   flow   (CBF)   in   animals   is   challenging   due   to   the   low   SNR   and   lack   of  
 sensitivity.   Sammba-MRI   allows   to   estimate   quantitative   CBF   maps   for   Bruker-FAIR   EPI  
-sequences. Figure 3 shows the CBF map from a group of 10 mice (inhouse dataset 2). 
+sequences. Figure 3 shows voxelwise map and regional absolute CBF values from a group of 10 mice (inhouse dataset 2), all in agreement with the literature.
 
 %------------------------------------------------
 \begin{center}
@@ -233,8 +233,9 @@ sequences. Figure 3 shows the CBF map from a group of 10 mice (inhouse dataset 2
 
 %------------------------------------------------
 \textbf{\large\textcolor{contrastcol}{{Resting state networks}}}
-Resting   state   spatial   networks   extraction   can   be   done   using   ICA.   Using   sammba-MRI,   we  
-performed   ICA   on   a   group   of   15   mice      from   a   public   dataset   [6].   Relevant   bilateral  
+Resting   state   spatial   networks   extraction   can   be   achieved through   independent components analysis (ICA). We  
+performed   ICA  with nilearn on   a   group   of   15   mice (Zurich dataset \cite{zerbi:2015})  after registering functional images to a common space
+with sammba-MRI.   Relevant   bilateral  
 regions are found even without data post-processing (Figure 4).
 
 %------------------------------------------------
@@ -269,7 +270,7 @@ regions are found even without data post-processing (Figure 4).
 %------------------------------------------------
 
 \begin{center}
-\textbf{\Large{\textcolor{emphsizecol}{\url{https://sammba-mri.github.io}}}}
+\textbf{\Large{\textcolor{emphsizecol}{\textbf{\url{https://sammba-mri.github.io}}}}}
 \end{center}
 }
 

@@ -85,13 +85,6 @@ if __name__ == '__main__':
 
     anat_files = glob.glob(os.path.expanduser(
         '~/mrm_reoriented_bil2/bil2_transfo_C57*.nii.gz'))
-    # SPM failed for yj1, custom brain mask with sammba
-    anat_files.remove(os.path.expanduser(
-        '/home/salma/mrm_reoriented_bil2/bil2_transfo_C57_yj1_invivo.nii.gz'))
-    anat_files.remove(os.path.expanduser(
-        '~/mrm_reoriented_bil2/bil2_transfo_C57_Az1_invivo.nii.gz'))
-#    anat_files.remove(os.path.expanduser(
-#        '~/mrm_bil2_transformed/bil2_transfo_C57_ab1_invivo.nii.gz'))
     mice_ids = [os.path.basename(a)[12:] for a in anat_files]
     sammba_dices = []
     sammba_dices2 = []
@@ -190,6 +183,7 @@ if __name__ == '__main__':
         spm_dices.append(spm_mouse_dices)
         original_dices.append(original_mouse_dices)
 
+    stop
     import matplotlib.pylab as plt
 
 
@@ -207,26 +201,32 @@ if __name__ == '__main__':
     contour_img.to_filename('/tmp/contour.nii.gz')
     from nilearn import plotting
 
-    anat_file = fname_presuffix(mice_ids[7],
+    anat_file = fname_presuffix(mice_ids[4],
                                 newpath=sammba_dir,
                                 prefix='bil2_transfo',
                                 suffix='_unifized_affine_general')
     atlas_file = fname_presuffix(mice_ids[7].replace('C57_', ''),
                                 newpath=sammba_dir,
                                 suffix='_allineated')
-
-    # 1.5 is good but shows mis accuracies
-    display = plotting.plot_anat('/tmp/anat.nii.gz', dim=-1.6, display_mode='z', cut_coords=[-2]) #-2
+    import shutil
+    reoriented_registered_anat_file = '/tmp/mrm_registered.nii.gz'
+    shutil.copy(anat_file, reoriented_registered_anat_file)
+    out_copy_geom = copy_geom(dest_file=reoriented_registered_anat_file,
+                              in_file=sammba_template_atlas_file)
+    # -1.5 is good but shows mis accuracies
     ventricles_mask_img1 = image.math_img('img==9', img=sammba_template_atlas_file)
     ventricles_mask_img2 = image.math_img('img==10', img=sammba_template_atlas_file)
     ventricles_mask_img3 = image.math_img('img==8', img=sammba_template_atlas_file)
     ventricles_mask_img4 = image.math_img('img==14', img=sammba_template_atlas_file)
     ventricles_mask_img5 = image.math_img('img==16', img=sammba_template_atlas_file)
-    display.add_contours(ventricles_mask_img1, colors='r')  # 2, 3, 10
-    display.add_contours(ventricles_mask_img2, colors='b')  # 2, 3, 10
-    display.add_contours(ventricles_mask_img3, colors='g')  # 2, 3, 10
-    display.add_contours(ventricles_mask_img4, colors='m')  # 2, 3, 10
-    display.add_contours(ventricles_mask_img5, colors='y')  # 2, 3, 10
+    display = plotting.plot_anat(reoriented_registered_anat_file, dim=-1.6, display_mode='z',
+                                 cut_coords=[-2],
+                                 annotate=False) #-2
+    display.add_contours(ventricles_mask_img1, colors='r', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
+    display.add_contours(ventricles_mask_img2, colors='y', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
+    display.add_contours(ventricles_mask_img3, colors='g', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
+    display.add_contours(ventricles_mask_img4, colors='m', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
+    display.add_contours(ventricles_mask_img5, colors='b', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
     plt.savefig('/home/salma/publications/appning/poster/figures/atlas_overlays_dim-1pt6.png',
                 facecolor='k', edgecolor='k')
     plotting.show()
@@ -235,7 +235,7 @@ if __name__ == '__main__':
     # 4 and 20 are small
     # 6 internal capsule
     plt.style.use('dark_background')
-    plt.figure(figsize=(3, 3))
+    plt.figure(figsize=(3.5, 3.5))
     colors = ['r'] * 20
 #    colors[8] = 'g'
 #    colors[10] = 'b'
@@ -258,15 +258,15 @@ if __name__ == '__main__':
 
     plt.scatter(spm_region_dices, sammba_region_dices, c=color, label=label, s=5)
     plt.plot([0, 1], [0, 1], 'w')
-    plt.legend()
+    plt.legend(fontsize=13)
     m = max(np.max(sammba_dices), np.max(spm_dices))
     plt.xlim(.2 - .01, m + .01)
     plt.ylim(.2- .01, m + .01)
     ticks = [.3, .5, .7, .9]
     plt.xticks(ticks)
     plt.yticks(ticks)
-    plt.xlabel('SPM mouse')
-    plt.ylabel('sammba-MRI')
-    plt.subplots_adjust(top=.96, right=.99, bottom=.16, left=.19)
+    plt.xlabel('SPM mouse', fontsize=13)
+    plt.ylabel('sammba-MRI', fontsize=13)
+    plt.subplots_adjust(top=.97, right=.98, bottom=.16, left=.17)
     plt.savefig(os.path.expanduser('~/publications/appning/poster/figures/bil2_transfo_dice_boxplots.png'))
     plt.show()
