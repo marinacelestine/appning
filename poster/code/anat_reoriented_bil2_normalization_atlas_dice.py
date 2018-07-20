@@ -219,15 +219,15 @@ if __name__ == '__main__':
     ventricles_mask_img3 = image.math_img('img==8', img=sammba_template_atlas_file)
     ventricles_mask_img4 = image.math_img('img==14', img=sammba_template_atlas_file)
     ventricles_mask_img5 = image.math_img('img==16', img=sammba_template_atlas_file)
-    display = plotting.plot_anat(reoriented_registered_anat_file, dim=-1.6, display_mode='z',
+    display = plotting.plot_anat(reoriented_registered_anat_file, dim=-1.8, display_mode='z',
                                  cut_coords=[-2],
                                  annotate=False) #-2
-    display.add_contours(ventricles_mask_img1, colors='r', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
-    display.add_contours(ventricles_mask_img2, colors='y', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
+    display.add_contours(ventricles_mask_img1, colors='r', linewidths=(.01, .01, .01, .01, .01, 1))  # 2, 3, 10
+    display.add_contours(ventricles_mask_img2, colors='c', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
     display.add_contours(ventricles_mask_img3, colors='g', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
-    display.add_contours(ventricles_mask_img4, colors='m', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
+    display.add_contours(ventricles_mask_img4, colors='m', linewidths=(.01, .01, .01, .01, .01, 1))  # 2, 3, 10
     display.add_contours(ventricles_mask_img5, colors='b', linewidths=(1, .01, .01, .01, .01, .01))  # 2, 3, 10
-    plt.savefig('/home/salma/publications/appning/poster/figures/atlas_overlays_dim-1pt6.png',
+    plt.savefig('/home/salma/publications/appning/poster/figures/atlas_overlays_dim-1pt8.png',
                 facecolor='k', edgecolor='k')
     plotting.show()
 
