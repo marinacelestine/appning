@@ -1,0 +1,432 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is just an example/guide for you to refer to when submitting manuscripts to Frontiers, it is not mandatory to use Frontiers .cls files nor frontiers.tex  %
+% This will only generate the Manuscript, the final article will be typeset by Frontiers after acceptance.   
+%                                              %
+%                                                                                                                                                         %
+% When submitting your files, remember to upload this *tex file, the pdf generated with it, the *bib file (if bibliography is not within the *tex) and all the figures.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Version 3.4 Generated 2018/06/15 %%%
+%%% You will need to have the following packages installed: datetime, fmtcount, etoolbox, fcprefix, which are normally inlcuded in WinEdt. %%%
+%%% In http://www.ctan.org/ you can find the packages and how to install them, if necessary. %%%
+%%%  NB logo1.jpg is required in the path in order to correctly compile front page header %%%
+
+\documentclass[utf8]{frontiersSCNS} % for Science, Engineering and Humanities and Social Sciences articles
+%\documentclass[utf8]{frontiersHLTH} % for Health articles
+%\documentclass[utf8]{frontiersFPHY} % for Physics and Applied Mathematics and Statistics articles
+
+
+%\usepackage[utf8]{inputenc}
+%\usepackage[english]{babel}
+%\usepackage{minted}  % for styling python code
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\usepackage{listings}  % for styling python code
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            % 
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+%\setcitestyle{square} % for Physics and Applied Mathematics and Statistics articles
+\usepackage{url,hyperref,lineno,microtype,subcaption}
+\usepackage[onehalfspacing]{setspace}
+
+\linenumbers
+
+
+% Leave a blank line between paragraphs instead of using \\
+
+
+\def\keyFont{\fontsize{8}{11}\helveticabold }
+\def\firstAuthorLast{Sample {et~al.}} %use et al only if is more than 1 author
+\def\Authors{First Author\,$^{1,*}$, Co-Author\,$^{2}$ and Co-Author\,$^{1,2}$}
+% Affiliations should be keyed to the author's name with superscript numbers and be listed as follows: Laboratory, Institute, Department, Organization, City, State abbreviation (USA, Canada, Australia), and Country (without detailed address information such as city zip codes or street names).
+% If one of the authors has a change of address, list the new address below the correspondence details using a superscript symbol and use the same symbol to indicate the author in the author list.
+\def\Address{$^{1}$Laboratory X, Institute X, Department X, Organization X, City X , State XX (only USA, Canada and Australia), Country X \\
+$^{2}$Laboratory X, Institute X, Department X, Organization X, City X , State XX (only USA, Canada and Australia), Country X  }
+% The Corresponding Author should be marked with an asterisk
+% Provide the exact contact address (this time including street name and city zip code) and email of the corresponding author
+\def\corrAuthor{Corresponding Author}
+
+\def\corrEmail{email@uni.edu}
+
+
+
+
+\begin{document}
+%\onecolumn
+\firstpage{1}
+
+\title[Sammba-MRI]{Sammba-MRI: a library for processing SmAll MaMmals BrAin MRI data in Python} 
+
+\author[\firstAuthorLast ]{\Authors} %This field will be automatically populated
+\address{} %This field will be automatically populated
+\correspondance{} %This field will be automatically populated
+
+\extraAuth{}% If there are more than 1 corresponding author, comment this line and uncomment the next one.
+%\extraAuth{corresponding Author2 \\ Laboratory X2, Institute X2, Department X2, Organization X2, Street X2, City X2 , State XX2 (only USA, Canada and Australia), Zip Code2, X2 Country X2, email2@uni2.edu}
+
+
+\maketitle
+
+
+\begin{abstract}
+
+%%% Leave the Abstract empty if your article does not require one, please see the Summary Table for full details.
+\section{}
+For full guidelines regarding your manuscript please refer to \href{http://www.frontiersin.org/about/AuthorGuidelines}{Author Guidelines}.
+
+As a primary goal, the abstract should render the general significance and conceptual advance of the work clearly accessible to a broad readership. References should not be cited in the abstract. Leave the Abstract empty if your article does not require one, please see \href{http://www.frontiersin.org/about/AuthorGuidelines#SummaryTable}{Summary Table} for details according to article type. 
+
+
+\tiny
+ \keyFont{ \section{Keywords:} keyword, keyword, keyword, keyword, keyword, keyword, keyword, keyword} %All article types: you may provide up to 8 keywords; at least 5 are mandatory.
+\end{abstract}
+
+\section{Introduction}
+
+For Original Research Articles , Clinical Trial Articles, and Technology Reports , the introduction should be succinct, with no subheadings. For Case Reports the Introduction should include symptoms at presentation, physical exams and lab results.
+
+
+
+\section{Tools: nipy ecosystem and neuroimaging software packages}
+
+For requirements for a specific article type please refer to the Article Types on any Frontiers journal page. Please also refer to  \href{http://home.frontiersin.org/about/author-guidelines#Sections}{Author Guidelines} for further information on how to organize your manuscript in the required sections or their equivalents for your field
+
+% For Original Research articles, please note that the Material and Methods section can be placed in any of the following ways: before Results, before Discussion or after Discussion.
+
+\section{Code design}
+All pipelines rely on scikit-learn transformers
+\section{DICOM to NIFTI conversion}
+Sammba-MRI allows to convert Bruker DICOM files to the standard Nifti-1 
+imaging format and extracts extensive information using DCMTK. 
+Bruker files conversion is an active development field
+bru2nii, italiannaveauGuy, https://github.com/lamyj/dicomifier,
+our implementation is meant to be a light helper function, allowing to 
+handle the conversion on the fly. It has been tested only for Paravision 6
+and a limited number of imaging sequences.
+\section{Bias field correction}
+Intensity non-uniformity modelling is essential in preclinical studies
+because the intensity gradient corrupting MR images becomes
+particularly [important, pronounced] at high field strengths.
+Sammba-MRI relies on AFNI 3dUnifize to correct for intensity bias in
+anatomical images, and on N4BiasFieldCorrection function
+of the ANTs package \citep{tustison2010n4itk}
+for the other modalities.
+% from Power Phd
+%A smoothly-varying, hardware-induced, low-frequency intensity gradient often corrupts MR images (Sled & Pike, 1998). This is caused by inhomogeneity of the scanner’s B0 field, variable sensitivity of the receiver coils, or inhomogeneity of the radiofrequency pulse, which can be induced via non-uniformity of the transmission coil or via electromagnetic interactions and distortions by the subjects themselves (Lewis & Fox, 2004). As this effect becomes especially pronounced at high field strengths (Boyes et al.,2008), intensity non-uniformity modelling is essential in preclinical studies. NUC improves automated tissue classifications and image registration (Sled & Pike, 1998; Van Leemput et al., 1999; Lewis & Fox, 2004). Locally adaptive NUC algorithms, such as N3, have been shown to outperform nonadaptive methods (Arnold et al., 2001). I initially employed N3 (Sled et al., 1998), and later the N4ITK (N4) algorithm (Tustison et al., 2010), found to reliably correct bias at high field strengths, using 200 iterations; 256 histogram bins; a 0.15mm FWHM Gaussian kernel to model the bias field; subsampling factor 4 (for high-resolution, ex vivo images) or 2 (for lower-resolution in vivo images). NUC is further refined during the iterative expectation maximisation steps of tissue segmentation. In neither technique is the image resampled; thus image quality is maintained.
+%
+\section{Brain extraction}
+Brain extraction is the critical early step in processing
+MRI images from small animals. Various rodent-specific 
+automatic software or human adapted tools exist [citations].
+We choose to rely by default on 
+the LOGISMOS-based graph segmentation based on grayscale mathematical morphology 
+%Oguz et al. (2014) followed mathematical morphology operations with an intensity gradient-based graph cut method to constrain the outer surface of a rodent brain mask. This required varying smoothness constraints across the resulting brain surface, and a manually-specified upper bound on the brain volume. 
+RATS \citep{oguz2014rats} because
+of its good performance across a wide range of datasets and its high 
+speed.
+%and the template-based skullstripper \citep{delora2016simple}.
+An alternative to the non-open source RATS tool  is also 
+available, based on an adaptation of the 
+human histogram-based brain extraction method of nilearn. 
+This method can be used in any pipeline by setting the parameter
+use\textunderscore rats\textunderscore  tool to False.
+Because severe intensity inhomogeneity can compromise
+the skull stripping quality, prior bias field correction with
+3dUnifize
+is possible [manageable] [can be controlled/ performed within].
+A helper function, brainsegmentationreport, allows to
+efficiently tune the "amount" of bias correction by
+producing for each preprocessing the extracted mask total volume, its 
+anteroposterior, right-left, and inferior-superior lengths as well
+as its symmetry in the mid-sagittal plane 
+inspired from \citet{powell2016fully} work.
+
+\section{Template matching}
+Template matching is a necessary step for group studies.
+%
+% from Ionas et al
+%In order to make any generalizable statements regard- ing brain function and organization, an equivalence between brain areas across individuals needs to be established. This is done by spatial transformation of brain maps in a study to a population or standard reference template.
+%
+%Several MRI templates exist for mouse
+Sammba-MRI registration relies on the estimation of a linear transform
+between the
+brain extracted images
+with AFNI's 3dAllineate, followed by the computation of a nonlinear
+warp between the whole head images with AFNI 3dQwarp.
+Internal parameters of these functions have been optimized for
+small animal brains.
+%with spatial parameters adapted to the mouse brain
+\begin{python}
+from sammba.registration import TemplateRegistrator
+
+reg = TemplateRegistrator('dorr_t2.nii.gz', brain_volume=400)
+reg.fit('t2.nii.gz')
+\end{python}
+All pipelines encompass inverse transformation to bring an image from 
+the reference space to the individual's space.
+
+Once a registrator has been transformed, the inverse operation bringing an 
+image from the reference space to the individual's space can be readily
+performed using the associated inverse transform function.
+\begin{python}
+registrator.fit_modality('epi.nii.gz', modality='func')
+registrator.inverse_transform_towards_modality('dorr_atlas.nii.gz')
+\end{python}
+
+\subsection{Results}
+Registration accuracy has been evaluated on Brookhaven's data \citep{ma2008vivo} by 
+measuring the correspondence of segmented structures between individual images 
+registered 
+to their average template and the template itself.
+Because the shared individual images have been pre-registered to one reference image, 
+they have been submitted to slight random quadratic deformations (Normally 
+distributed coefficients with std=$0.1$ mm for translation, $0.1$ degrees for 
+rotation, $0.02$ mm for scaling, $0.02$ mm for shear and $0.005$ mm for the remaining $31$ polynomial coefficients) before performing registration.
+
+For comparison purposes, registration has been repeated using SPM mouse \citep{sawiak2009spmmouse}.
+Regional overlap was measured
+between each region in the average atlas and the transformed mice atlases 
+using Dice's coefficient.
+Figure 1 shows that sammba-MRI registration achieves
+high overlap values and outperforms SPM mouse in the majority of cases.
+
+\section{Group-wise registration} % Creation of cohort-specific templates
+% from Power
+%Group-wise registration (GWR) aims to align all images within a common coordinate space, resulting in an average “atlas” image representing the mean group morphology, and deformation fields mapping each voxel to points in the original image space.
+%
+Studying populations of animals gains precision by the use of cohort-specific 
+templates. Sammba-MRI proposes an iterative method to create a fine anatomical 
+template from individual structural MRI scans. A first rough template is obtained
+by averaging bias field corrected head images centred on their respective brain masks barycentres. S'en suit the registration of the individual images to this template
+and the iteration of this process while increasing the registration degrees of 
+freedom and updating the target template. The registrations rely on AFNI linear 
+alignment and nonlinear warping, with the underlying parameters optimized
+for small animal images \citep{nadkarni20193d}. This hopefully allows the creation of high quality
+templates, as achieved in \citep{nadkarni2018digital}. The method adapts to different animal species (see figure).
+
+\section{Between-modalities registration}
+\section{Multi-modal processing}
+In the increasing context of multi-modal imaging, several modalities can be
+acquired from small animals, including and not restricted to different weighting/marker
+structural images, functional MRI, ASL MRI, CEST, etc...
+[Sammba-MRI offers 4 different pipelines to perform coregistration
+between anatomical scans and other modalities.]
+\fbox{
+\begin{minipage}{0.45\textwidth}
+from sammba.registration import Coregistrator
+coregistrator = Coregistrator()
+\end{minipage}
+}
+All registration pipelines start with bias filed correction for the anatomical scan
+[using 3dUnifize] and the modality of interest. 
+\subsection{Registration with anatomical}
+\subsection{Rigid-body registration}
+Since orientation is correctly handled through the DICOM to NIFTI conversion,
+the anatomical image is first reoriented to match the modality of interest.
+Both images then undergo intensity unifization and brain extraction.
+A rigid body
+transform that minimizes normalized mutual information [between]
+between the brain extracted images is estimated and applied to the whole head images.
+%\fbox{
+%\begin{minipage}{0.45\textwidth}
+\begin{lstlisting}[language=Python]
+coregistrator.fit_anat('t1.nii.gz')
+coregistrator.fit_modality('t2.nii.gz', modality='t2')
+\end{lstlisting}
+%\end{minipage}
+%}
+%\begin{minted}
+%[frame=lines, framesep=2mm, baselinestretch=1.2, bgcolor=LightGray, fontsize=\footnotesize, linenos]{python}
+%coregistrator.fit_anat('t1.nii.gz')
+%coregistrator.fit_modality('t2.nii.gz', modality='t2')
+%\end{minted}
+
+\subsubsection{Reorientation-only}
+It is possible that the source or/and the reference
+images are of insufficient quality to correctly estimate a rigid body transform
+(see figure ...). In this case,
+assuming that the head motion between the two acquisitions is low, it is [better]
+to only reorient the anatomical image to match the modality of interest.
+\fbox{
+\begin{minipage}{0.45\textwidth}
+coregistrator.fit\textunderscore anat('t1.nii.gz')
+coregistrator.fit\textunderscore modality('t2.nii.gz', modality='t2',
+reorient\textunderscore only=True)
+\end{minipage}
+}
+\subsection{Resting state BOLD fMRI processing}
+Functional scans are preprocessed using the same usual steps for human data
+with optional slice timing correction, bias field correction, realignment to the 
+first volume
+and computation of the temporal mean of all the volumes.
+The corresponding structural scan is then registered to the average functional scan.
+Since this is a critical step, the user can choose
+either to pursue with human-like pipeline by estimating a rigid body functional-to-
+structural transform and applying its inverse to the structural image, or to assume 
+that the head motion between the two scans is negligible.
+In all cases, the transformed or not structural image is then reoriented [check with Nad]
+to match the functional image. Next, the average functional image and
+the reoriented structural image are
+splitted into 2D slices along the z-direction and each functional slice undergoes
+afterwards a nonlinear registration step to best match the corresponding structural slice.
+This perslice registration corrects for EPI distortion while being more
+conservative than a global 3D nonlinear registration, to compensate for the low
+contrast in the BOLD acquistion of small animals.
+The structural-to-template warp, the functional-to-structural rigid body transform and the perslice functional-to-structural warps are finally combined 
+[concatenated] and applied in a one-big-step transformation
+to the functional data to minimize interpolation errors.
+\subsection{Results}
+Resting state spatial networks in mouse can be extracted using Inedependent Components Analysis (ICA) \citep{zerbi2015mapping, grandjean2019}. We preprocessed functional data
+from 15 mice (2-3 months old) publicly shared
+\citep{zerbi2015mapping} and performed an ICA using Group ICA 
+\citep{varoquaux2010group}. Relevant bilateral
+regions were found without additional data post-processing (Figures 3 and 4). [Garin annotate regions]
+%
+\subsection{Resting state ASL fMRI processing}
+Arterial spin labeling (ASL) is an attractive method 
+to image the vascular system by directly measuring blood flow.
+%ASL MRI is therefore the method of choice for quantification of capillary blood flow in small animals.
+But estimating the cerebral blood flow (CBF) in small animals is challenging due 
+to the low SNR and lack of sensitivity \citep{kober2008experimental}.
+Sammba-MRI allows to preprocess functional ASL scans M0 scan used 
+as the representative volume for registration. No slice timing correction
+or between volume realignment is performed because[ of the low contrast].
+For Bruker-FAIR (Flow-sensitive Alternating Inversion Recovery) EPI sequences,
+quantitative   CBF   maps can be estimated using fair-to-proc.
+%
+\subsubsection{Results}
+%
+Figure 3 shows voxelwise map and regional absolute CBF values from a group of 10 mice (inhouse dataset 2), all 
+in agreement with the literature \citep{muir2008cerebral}. Our implementation processes 10 mice, more than 
+300Gb, in only 20 minutes (regular desktop, 8Gb of RAM) [1 mice with 30 volumes, resolution, number of slices 
+etc].
+
+\section{Manuscript Formatting}
+
+\subsection{Heading Levels}
+
+%There are 5 heading levels
+
+\subsection{Level 2}
+\subsubsection{Level 3}
+\paragraph{Level 4}
+\subparagraph{Level 5}
+
+\subsection{Equations}
+Equations should be inserted in editable format from the equation editor.
+
+\begin{equation}
+\sum x+ y =Z\label{eq:01}
+\end{equation}
+
+\subsection{Figures}
+Frontiers requires figures to be submitted individually, in the same order as they are referred to in the manuscript. Figures will then be automatically embedded at the bottom of the submitted manuscript. Kindly ensure that each table and figure is mentioned in the text and in numerical order. Figures must be of sufficient resolution for publication \href{http://home.frontiersin.org/about/author-guidelines#ResolutionRequirements}{see here for examples and minimum requirements}. Figures which are not according to the guidelines will cause substantial delay during the production process. Please see \href{http://home.frontiersin.org/about/author-guidelines#GeneralStyleGuidelinesforFigures}{here} for full figure guidelines. Cite figures with subfigures as figure \ref{fig:2}B.
+
+
+\subsubsection{Permission to Reuse and Copyright}
+Figures, tables, and images will be published under a Creative Commons CC-BY licence and permission must be obtained for use of copyrighted material from other sources (including re-published/adapted/modified/partial figures and images from the internet). It is the responsibility of the authors to acquire the licenses, to follow any citation instructions requested by third-party rights holders, and cover any supplementary charges.
+%%Figures, tables, and images will be published under a Creative Commons CC-BY licence and permission must be obtained for use of copyrighted material from other sources (including re-published/adapted/modified/partial figures and images from the internet). It is the responsibility of the authors to acquire the licenses, to follow any citation instructions requested by third-party rights holders, and cover any supplementary charges.
+
+\subsection{Tables}
+Tables should be inserted at the end of the manuscript. Please build your table directly in LaTeX.Tables provided as jpeg/tiff files will not be accepted. Please note that very large tables (covering several pages) cannot be included in the final PDF for reasons of space. These tables will be published as \href{http://home.frontiersin.org/about/author-guidelines#SupplementaryMaterial}{Supplementary Material} on the online article page at the time of acceptance. The author will be notified during the typesetting of the final article if this is the case. 
+
+\section{Nomenclature}
+
+\subsection{Resource Identification Initiative}
+To take part in the Resource Identification Initiative, please use the corresponding catalog number and RRID in your current manuscript. For more information about the project and for steps on how to search for an RRID, please click \href{http://www.frontiersin.org/files/pdf/letter_to_author.pdf}{here}.
+
+\subsection{Life Science Identifiers}
+Life Science Identifiers (LSIDs) for ZOOBANK registered names or nomenclatural acts should be listed in the manuscript before the keywords. For more information on LSIDs please see \href{http://www.frontiersin.org/about/AuthorGuidelines#InclusionofZoologicalNomenclature}{Inclusion of Zoological Nomenclature} section of the guidelines.
+
+
+\section{Additional Requirements}
+
+For additional requirements for specific article types and further information please refer to \href{http://www.frontiersin.org/about/AuthorGuidelines#AdditionalRequirements}{Author Guidelines}.
+
+\section*{Conflict of Interest Statement}
+%All financial, commercial or other relationships that might be perceived by the academic community as representing a potential conflict of interest must be disclosed. If no such relationship exists, authors will be asked to confirm the following statement: 
+
+The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
+
+\section*{Author Contributions}
+
+The Author Contributions section is mandatory for all articles, including articles by sole authors. If an appropriate statement is not provided on submission, a standard one will be inserted during the production process. The Author Contributions statement must describe the contributions of individual authors referred to by their initials and, in doing so, all authors agree to be accountable for the content of the work. Please see  \href{http://home.frontiersin.org/about/author-guidelines#AuthorandContributors}{here} for full authorship criteria.
+
+\section*{Funding}
+Details of all funding sources should be provided, including grant numbers if applicable. Please ensure to add all necessary funding information, as after publication this is no longer possible.
+
+\section*{Acknowledgments}
+This is a short text to acknowledge the contributions of specific colleagues, institutions, or agencies that aided the efforts of the authors.
+
+\section*{Supplemental Data}
+ \href{http://home.frontiersin.org/about/author-guidelines#SupplementaryMaterial}{Supplementary Material} should be uploaded separately on submission, if there are Supplementary Figures, please include the caption in the same file as the figure. LaTeX Supplementary Material templates can be found in the Frontiers LaTeX folder.
+
+\section*{Data Availability Statement}
+The datasets [GENERATED/ANALYZED] for this study can be found in the [NAME OF REPOSITORY] [LINK].
+% Please see the availability of data guidelines for more information, at https://www.frontiersin.org/about/author-guidelines#AvailabilityofData
+
+\bibliographystyle{frontiersinSCNS_ENG_HUMS} % for Science, Engineering and Humanities and Social Sciences articles, for Humanities and Social Sciences articles please include page numbers in the in-text citations
+%\bibliographystyle{frontiersinHLTH&FPHY} % for Health, Physics and Mathematics articles
+\bibliography{test}
+
+%%% Make sure to upload the bib file along with the tex file and PDF
+%%% Please see the test.bib file for some examples of references
+
+\section*{Figure captions}
+
+%%% Please be aware that for original research articles we only permit a combined number of 15 figures and tables, one figure with multiple subfigures will count as only one figure.
+%%% Use this if adding the figures directly in the mansucript, if so, please remember to also upload the files when submitting your article
+%%% There is no need for adding the file termination, as long as you indicate where the file is saved. In the examples below the files (logo1.eps and logos.eps) are in the Frontiers LaTeX folder
+%%% If using *.tif files convert them to .jpg or .png
+%%%  NB logo1.eps is required in the path in order to correctly compile front page header %%%
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=10cm]{logo1}% This is a *.eps file
+\end{center}
+\caption{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures}\label{fig:1}
+\end{figure}
+
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=15cm]{logos}
+\end{center}
+\caption{This is a figure with sub figures, \textbf{(A)} is one logo, \textbf{(B)} is a different logo.}\label{fig:2}
+\end{figure}
+
+%%% If you are submitting a figure with subfigures please combine these into one image file with part labels integrated.
+%%% If you don't add the figures in the LaTeX files, please upload them when submitting the article.
+%%% Frontiers will add the figures at the end of the provisional pdf automatically
+%%% The use of LaTeX coding to draw Diagrams/Figures/Structures should be avoided. They should be external callouts including graphics.
+
+\end{document}
