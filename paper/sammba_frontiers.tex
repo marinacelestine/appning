@@ -15,59 +15,10 @@
 %\documentclass[utf8]{frontiersHLTH} % for Health articles
 %\documentclass[utf8]{frontiersFPHY} % for Physics and Applied Mathematics and Statistics articles
 
+\usepackage{minted}  % for styling python code
+%\usepackage{listings}  % for styling python code
 
-%\usepackage[utf8]{inputenc}
-%\usepackage[english]{babel}
-%\usepackage{minted}  % for styling python code
-
-% Default fixed font does not support bold face
-\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{11} % for bold
-\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{11}  % for normal
-
-% Custom colors
-\usepackage{color}
-\definecolor{deepblue}{rgb}{0,0,0.5}
-\definecolor{deepred}{rgb}{0.6,0,0}
-\definecolor{deepgreen}{rgb}{0,0.5,0}
-
-\usepackage{listings}  % for styling python code
-
-% Python style for highlighting
-\newcommand\pythonstyle{\lstset{
-language=Python,
-basicstyle=\ttm,
-otherkeywords={self},             % Add keywords here
-keywordstyle=\ttb\color{deepblue},
-emph={MyClass,__init__, False,True},          % Custom highlighting
-emphstyle=\ttb\color{violet},    % Custom highlighting style
-stringstyle=\ttfamily\color{deepgreen},
-frame=tlrb,%tb,                         % Any extra options here
-showstringspaces=false            % 
-}
-\lstset{literate=%
-   *{0}{{{\color{deepred}0}}}1
-    {1}{{{\color{deepred}1}}}1
-    {2}{{{\color{deepred}2}}}1 %\color{red!20!violet}
-    {3}{{{\color{deepred}3}}}1
-    {4}{{{\color{deepred}4}}}1
-    {5}{{{\color{deepred}5}}}1
-    {6}{{{\color{deepred}6}}}1
-    {7}{{{\color{deepred}7}}}1
-    {8}{{{\color{deepred}8}}}1
-    {9}{{{\color{deepred}9}}}1
-}
-}
-
-% Python environment
-\lstnewenvironment{python}[1][]
-{
-\pythonstyle
-\lstset{#1}
-}
-{}
-\newcommand{\pythoninline}[1]{\pythonstyle\lstinline[columns=fixed]{#1}}
-
-%\lstMakeShortInline[columns=fixed]|
+\newcommand{\pythoninline}[1]{\mintinline{python}{#1}}
 
 %\setcitestyle{square} % for Physics and Applied Mathematics and Statistics articles
 \usepackage{url,hyperref,lineno,microtype,subcaption}
@@ -134,7 +85,9 @@ enables fluent scriptable analysis workflows, from DICOM conversion to results v
 \end{abstract}
 
 \section{Introduction}
-
+%\begin{mycode}{}
+%My \code here
+%\end{mycode}
 Small mammals neuroimaging allows to investigate structural and functional aspects in animal models of the healthy and diseased brain. Challenges in small animal MRI include [...].
 Technical advances entail increasing data resolution, sample size, and meta-information complexity. 
 The changing data properties call for more advanced statistical methods that scale naturally to the high-dimensional regime, are inter-operable in complex processing pipelines, and can better exploit modern multiprocessing architectures than predominant methods.
@@ -247,7 +200,12 @@ using whole head images, and therefore followed this strategy across all the
 registration pipelines.
 %on the estimation of a linear transform between the brain extracted images with AFNI's 3dAllineate, followed by the computation of a nonlinear warp between the whole head images with AFNI 3dQwarp.
 %with spatial parameters adapted to the mouse brain
-\begin{python}
+\begin{minted}[
+frame=single,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\scriptsize,
+]{python}
 from sammba.registration import 
     TemplateRegistrator
 
@@ -255,7 +213,7 @@ registrator = TemplateRegistrator(
     'dorr_t2.nii.gz',
     brain_volume=400)
 registrator.fit('mouse01_t1.nii.gz')
-\end{python}
+\end{minted}
 
 Registration accuracy has been evaluated on Brookhaven's data \citep{ma2008vivo} by 
 measuring the correspondence of segmented structures between individual images 
@@ -330,12 +288,13 @@ worsen at higher field strengths and have a more dramatic impact on small brains
 Sammba-MRI offers 4 different pipelines to perform coregistration
 between anatomical scans and other modalities, correcting for geometric 
 distortions if needed.
-\begin{python}
+\begin{minted}[frame=single, framesep=2mm, baselinestretch=1.2,
+fontsize=\scriptsize,]{python}
 from sammba.registration import 
     Coregistrator
 coregistrator = Coregistrator(
     brain volume =400)
-\end{python}
+\end{minted}
 All registration pipelines start with bias filed correction for the anatomical scan
 and the modality of interest. 
 %\subsubsection{Registration with anatomical}
@@ -347,18 +306,14 @@ Both images then undergo intensity unifization and brain extraction.
 A rigid body
 transform that minimizes normalized mutual information [between]
 between the brain extracted images is estimated and applied to the whole head images.
-\begin{python}
+
+\begin{minted}[frame=single, framesep=2mm, baselinestretch=1.2,
+fontsize=\scriptsize,]{python}
 coregistrator.fit_anat(
     'mouse01_t1.nii.gz')
 coregistrator.fit_modality(
     'mouse01_t2.nii.gz')
-\end{python}
-%\begin{minted}
-%[frame=lines, framesep=2mm, baselinestretch=1.2, bgcolor=LightGray, fontsize=\footnotesize, linenos]{python}
-%coregistrator.fit_anat('t1.nii.gz')
-%coregistrator.fit_modality('t2.nii.gz', modality='t2')
-%\end{minted}
-
+\end{minted}
 \subsubsection{Reorientation-only}
 
 It is possible that the source or/and the reference
@@ -366,12 +321,13 @@ images are of insufficient quality to correctly estimate a rigid body transform
 (see figure ...). In this case,
 assuming that the head motion between the two acquisitions is low, it is [better]
 to only reorient the anatomical image to match the modality of interest.
-\begin{python}
+\begin{minted}[frame=single, framesep=2mm, baselinestretch=1.2,
+fontsize=\scriptsize,]{python}
 coregistrator.fit_anat('t1.nii.gz')
 coregistrator.fit_modality(
     't2.nii.gz',
     reorient_only=True)
-\end{python}
+\end{minted}
 
 \subsubsection{Resting state BOLD fMRI processing}
 
@@ -428,13 +384,14 @@ the reference space to the individual's space.
 %    brain_volume='400')
 %registrator.fit_anat(
 %    'mouse01_t1.nii.gz')
-\begin{python}
+\begin{minted}[frame=single, framesep=2mm, baselinestretch=1.2,
+fontsize=\scriptsize,]{python}
 registrator.fit_modality(
     'mouse01_epi.nii.gz',
     modality='func')
 registrator.inverse_transform_towards_modality(
     'dorr_atlas.nii.gz')
-\end{python}
+\end{minted}
 
 \subsection{Results}
 
