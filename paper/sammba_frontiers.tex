@@ -97,10 +97,30 @@ The changing data properties call for more advanced statistical methods that sca
 
 \section{Tools: nipy ecosystem and neuroimaging software packages}
 
-With its mature scientific stack, Python is a growing contender
-in the landscape of neuroimaging data analysis with tools such as
-Nipy (Millman and Brett, 2007) or Nipype (Gorgolewski et al.,
-2011). The scientific Python libraries used in this paper are:
+With its Free and Open Source (FOSS)
+dependency stack and its growing neuroimaging community with tools such as
+Nipy (Millman and Brett, 2007), Python was the language of choice for our
+package.
+%
+%The language of choice for workflow handling is Python, owing to its Free and Open Source (FOSS) dependency stack, readability, wealth of available libraries, ease of package management, and its large and dynamic developer community. 
+%
+%Python is a growing contender in the landscape of neuroimaging data analysis with tools such as Nipy (Millman and Brett, 2007). 
+%
+The scientific Python libraries used in sammba-MRI are
+NumPy \citep{oliphant2006guide}, SciPy \citep{millman2011python}, the neuroimaging 
+data analysis tools nibabel \citep{nibabel}, nilearn \citep{abraham2014machine} and 
+nipype \citep{gorgolewski2011nipype}. %as well as
+Visualization functionality depends on matplotlib \citep{hunter2007matplotlib} for 
+plotting or Graphviz (Gansner and North, 2000), but neither is required to perform
+MRI data processing.
+
+Via Nipype, we utilize basic MRI preprocessing
+functions from the AFNI \citep{cox1996afni}, FSL \citep{jenkinson2012fsl} and ANTs 
+\citep{avants2009advanced}
+packages. The dependency on the efficient but non open-source brain segmentation RATs 
+tool \citep{oguz2014rats} is optional.
+
+%Visualization functionality depends on Mat-plotlib (Hunter, 2007) and/or Graphviz (Gansner and North, 2000), but neither is required to perform machine learning or prediction. 
 %
 %For requirements for a specific article type please refer to the Article Types on any Frontiers journal page. Please also refer to  \href{http://home.frontiersin.org/about/author-guidelines#Sections}{Author Guidelines} for further information on how to organize your manuscript in the required sections or their equivalents for your field
 % For Original Research articles, please note that the Material and Methods section can be placed in any of the following ways: before Results, before Discussion or after Discussion.
@@ -108,11 +128,42 @@ Nipy (Millman and Brett, 2007) or Nipype (Gorgolewski et al.,
 
 \section{Code design}
 
-All pipelines rely on scikit-learn transformers.
-Graphical or interactive interfaces are avoided, as
-they impede reproducibility, encumber the depen-
-dency graph, and reduce the sustainability of the
-project.
+Coding guidelines follow the recommendations of \citet{varoquaux2010software}
+practiced in nilearn and other successfully adopted packages
+\citep{buitinck2013api, joblib}
+to make the codebase understandable and easily maintainable.
+% Emphasis is put on ease of use, performance, documentation, and API consistency
+%
+%minimal dependencies, sparse use of objects while making many different classes that share the same interface.
+%
+%Consistency, minimal classes, sklearn nomenclature, minimal dependencies
+%
+Objects are used with parsimony : the different registration classes share
+all the same \pythoninline{BaseRegistrator} interface, and the brain extraction
+classes comply to the nipype \pythoninline{BaseInterface}.
+Effort is made to keep the code uniformly formatted and use consistent 
+naming for the functions and parameters 
+%nomenclature 
+following the coding conventions of nilearn.
+%use consistent naming for the  functions and parameters used throughout a strict adherence to the Python coding guidelines and numpy style documentation
+%The dependencies are kept to the possible minimum to facilitate the installation
+% Finally,  we strive to use consistent naming for the functions and parameters used throughout a strict adherenceto the Python coding guidelines and numpy style documentation 
+%Graphical or interactive interfaces are avoided, as they impede reproducibility, encumber the dependency graph, and reduce the sustainability of the project.
+Preprocessing building blocks and pipelines are automatically tested on light MRI 
+data samples to ensure code quality.
+%Code  quality  is  ensured  with  unit  tests—as  of  release  0.8,  testcoverage is 81%—
+%
+Finally, the user is helped through sammba-MRI with 
+extensive documentation including installation instructions, API reference,
+pipelines graphs, and practical examples based on publicly available small animal 
+neuroimaging datasets.
+%
+%sammba-MRI provides practical examples to shows how to use the implemented methods. 
+%including narrative documentation, class references, a tutorial, installation instructions, as well as more than 60 examples, some featuring real-world applications. We try to minimize the use of machine-learning jargon, while maintaining precision with regards to the algorithms employed.
+%
+%By relying on publicly available small animal neuroimaging dataset, sammba-MRI provides practical examples to shows how to use the implemented methods. 
+%
+%All pipelines rely on scikit-learn transformers.
 
 \section{Preprocessing bricks}
 
@@ -122,7 +173,7 @@ Sammba-MRI allows to convert Bruker DICOM files to the standard Nifti-1
 imaging format and extracts extensive information using DCMTK. 
 Bruker files conversion is an active development field,
 with various available tools handling DICOM \citeauthor{dicomifier} or
-not \citeauthor{bru2nii, bruker2nifti}.
+not \citeauthor{bru2nii, chavarrias2016bruker2nifti}.
 Finally, ParaVision 360 with the latest patch 1.1 can export the NIFTI format since [...].
 %Finally, ParaVision can export the NIFTI format. But, one needs to upgrade to ParaVision 360 with the latest patch 1.1. Most users using PV 6 are still left behind. So, Bru2Nii is still needed before Bruker upgrading PV 6 to support NIFTI.
 Our implementation is meant to be a light helper function, allowing to 
@@ -407,12 +458,40 @@ in agreement with the literature \citep{muir2008cerebral}. Our implementation pr
 etc].
 
 \section{Big data, reproducibility, collaboration}
+The package design facilitates big data exploration: the user is able to run an 
+entire analysis in a single Python script, rerunning pipelines is optimized 
+through nipype caching mechanism and long lasting steps (nonlinear warping, perfusion 
+fitting) are executed in parallel.
+%
+We believe that reproducibility can be enabled [enhanced] with the sharing of code
+and data.
+%
+With %the aim of promoting the sharing of animal brain MRI data, 
+this aim, sammba-MRI promotes the sharing of MRI data by providing 
+%additional 
+utility functions to download publicly available small animal neuroimaging 
+datasets and relying on it for demoing its capabilities.
+In order to encourage external contributions, our package is hosted on the open 
+collaborative GitHub platform
+%Community-driven development. We base our development on collaborative tools such as git, github
+and distributed under the CeCILL v2.1 license, a FOSS license adapted to both international and French legal matters 
+allowing anyone to make changes and redistribute it. 
 
-[Parallelization, caching]
 
-[Pipeline graphs, demos on public data]
+%We focus on ease-of-use and code readability in order to encourage external contributions, 
 
-[easy and readable code, BSD3 licence, shared inhouse data]
+%With this aim, sammba-MRI is hosted on the open collaborative GitHub platform
+%
+%Community-driven development. We base our development on collaborative tools such as git, github
+%
+%This Agreement is an open source software license intended to give users significant freedom to modify and redistribute the software licensed hereunder.
+%
+%a "Free Software" license by the FSF with which the CeCILL project founders have worked. Since version 2.1, CeCILL is also approved by the Open Source Initiative as an "Open Source" license
+%
+%We believe that reproducibility is enabled [enhanced] with the sha. With the aim of promoting the sharing of animal brain MRI data, sammba-MRI provides additional utility functions to download publicly available small animal neuroimaging  datasets.
+
+
+[Pipeline graphs, easy and readable code, BSD3 licence, shared inhouse data]
 
 \section{Conclusion}
 
@@ -453,7 +532,7 @@ strategies of the underlying tools.
 
 The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
 
-%\section*{Author Contributions}
+\section*{Author Contributions}
 %
 %The Author Contributions section is mandatory for all articles, including articles by sole authors. If an appropriate statement is not provided on submission, a standard one will be inserted during the production process. The Author Contributions statement must describe the contributions of individual authors referred to by their initials and, in doing so, all authors agree to be accountable for the content of the work. Please see  \href{http://home.frontiersin.org/about/author-guidelines#AuthorandContributors}{here} for full authorship criteria.
 
